@@ -16,13 +16,12 @@ export class CondoCtrl {
     }
 
     async createCondo(req: Request): Promise<Condo> {
-        console.log("[POST] /condo controller", req.body);
         const { name, address } = req.body;
         if (!name || !address) {
             throw new RequestDataValidation("Data is missing");
         }
 
-        const condo = {
+        const condo:Condo = {
             name,
             address,
             createdAt: new Date(),
@@ -31,7 +30,6 @@ export class CondoCtrl {
         return await this.condoRepository.create(condo);
     }
     async updateCondo(req: Request): Promise<Condo> {
-        console.log("[PUT] /condo controller", req.body);
         const { id, name, address } = req.body;
         if (!id || !name || !address) {
             throw new RequestDataValidation("Data is missing");
