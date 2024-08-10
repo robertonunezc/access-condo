@@ -2,6 +2,7 @@ import { Knex } from "knex";
 import { User } from "../entities/user";
 import { UserRepository } from "../repositories/userRepository";
 import { Request, Response } from "express";
+import { RequestDataValidation } from "../errors/exceptions";
 
 export class UserCtrl {
   private userRepository: UserRepository;
@@ -10,7 +11,7 @@ export class UserCtrl {
     this.userRepository = new UserRepository(db);
   }
 
-  async getAllUsers() {
+  async getAllUsers():Promise<User[]> {
     return await this.userRepository.findAll();
   }
 
@@ -26,9 +27,3 @@ export class UserCtrl {
   }
 }
 
-// create a custom error class
-export class RequestDataValidation extends Error {
-  constructor(public message: string) {
-    super(message);
-  }
-}

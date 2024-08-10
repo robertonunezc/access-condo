@@ -13,5 +13,6 @@ export class User implements UserInterface {
         public phone: string,
         public createdAt: Date,
         public updatedAt: Date,
+        public id?: string,
     ) {}
 }
