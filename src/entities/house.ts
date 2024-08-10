@@ -1,3 +1,4 @@
+import { Condo } from "./condo";
 import { User } from "./user";
 
 export interface House {

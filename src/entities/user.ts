@@ -1,9 +1,17 @@
+import { Entity } from "../repositories/crudInterface";
 
-export class User {
+interface UserInterface extends Entity {
+    name: string;
+    email: string;
+    phone: string;
+}
+
+export class User implements UserInterface {
     constructor(
         public name: string,
         public email: string,
         public phone: string,
-        public id?: number,
+        public createdAt: Date,
+        public updatedAt: Date,
     ) {}
 }

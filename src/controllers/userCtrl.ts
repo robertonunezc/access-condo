@@ -11,7 +11,7 @@ export class UserCtrl {
   }
 
   async getAllUsers() {
-    return await this.userRepository.findAllUsers();
+    return await this.userRepository.findAll();
   }
 
   async createUser(req: Request):Promise<User> {
@@ -20,8 +20,9 @@ export class UserCtrl {
     if (!name || !email || !phone) {
         throw new RequestDataValidation("Data is missing");
       }
-    const user = new User(name, email, phone);
-    return  await this.userRepository.createUser(user);
+
+    const user = new User(name, email, phone, new Date(), new Date());
+    return  await this.userRepository.create(user);
   }
 }
 

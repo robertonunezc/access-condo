@@ -1,24 +1,25 @@
 import { Knex } from 'knex';
 import { User } from '../entities/user';
+import { CRUDInterface } from './crudInterface';
 
-export class UserRepository {
+export class UserRepository implements CRUDInterface{
     private knex: Knex;
 
     constructor(knex: Knex) {
       this.knex = knex;
     }
 
-  async findUserById(id: string): Promise<User | null> {
+  async findById(id: string): Promise<User | null> {
     const user = await this.knex('users').where({ id }).first();
     if (!user) return null;
-    return new User(user.name, user.email, user.phone);
+    return new User(user.name, user.email, user.phone, new Date(), new Date());
   }
-  async findAllUsers(): Promise<User[]> {
+  async findAll(): Promise<User[]> {
     const users = await this.knex('users');
-    return users.map((user) => new User(user.name, user.email, user.phone));
+    return users.map((user) => new User(user.name, user.email, user.phone, new Date(), new Date()));
   }
-    async createUser(user: User): Promise<User> {
+    async create(user: User): Promise<User> {
         const [id] = await this.knex('users').insert(user);
-        return new User(user.name, user.email, user.phone, id);
+        return new User(user.name, user.email, user.phone, new Date(), new Date());
     }
 }
