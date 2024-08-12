@@ -12,7 +12,7 @@ export class UserRepository implements CRUDInterface{
   async findById(id: string): Promise<User | null> {
     const user = await this.knex('users').where({ id }).first();
     if (!user) return null;
-    return new User(user.name, user.email, user.phone, new Date(), new Date());
+    return new User(user.name, user.email, user.phone, user.createdAt, user.updatedAt, user.id);
   }
   async findAll(): Promise<User[]> {
     const users = await this.knex('users');

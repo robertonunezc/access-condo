@@ -15,6 +15,8 @@ export class CondoCtrl {
     }
 
     async getAllCondos() {
+        const condos = await this.condoRepository.findAll();
+        console.log(condos)
         return await this.condoRepository.findAll();
     }
 
