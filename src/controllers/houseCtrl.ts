@@ -3,6 +3,7 @@ import { House } from "../entities/house";
 import { CondoRepository, HouseRepository, UserRepository } from "../repositories";
 import { RequestDataValidation } from "../errors/exceptions";
 import { Request } from "express";
+import { Condo } from "../entities/condo";
 
 export class HouseCtrl {
     private houseRepository: HouseRepository;
@@ -32,8 +33,14 @@ export class HouseCtrl {
         if (!owner) {
             throw new RequestDataValidation("Owner not found");
         }
-        const house = new House(owner, address, condo, new Date(), new Date());
-        return await this.houseRepository.create(house);
+        const houseData: House = {
+            address,
+            condo,
+            owner,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        }
+        return await this.houseRepository.create(houseData);
     }
 
     async updateHouse(req: Request): Promise<House> {

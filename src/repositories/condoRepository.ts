@@ -13,7 +13,9 @@ export class CondoRepository implements CRUDInterface{
   async findById(id: string): Promise<Condo | null> {
     const condo:Condo = await this.knex('condos').where({ id }).first();
     if (!condo) return null;
-    return new Condo(condo.name, condo.address, condo.manager, condo.createdAt, condo.updatedAt);
+    return {
+      ...condo
+    };
   }
   async findAll(): Promise<Condo[]> {
     const condos:Condo[] = await this.knex('condos');

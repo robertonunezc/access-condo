@@ -21,7 +21,13 @@ export class HouseRepository implements CRUDInterface {
     }
 
     async create(house: House): Promise<House> {
-        const [id] = await this.db('houses').insert(house);
+        const [id] = await this.db('houses').insert({
+            address: house.address,
+            condo_id: house.condo.id,
+            owner_id: house.owner.id,
+            createdAt: new Date(),
+            updatedAt: new Date(),
+        });
         return house;
     }
 
