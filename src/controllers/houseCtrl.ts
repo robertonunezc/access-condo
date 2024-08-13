@@ -43,13 +43,13 @@ export class HouseCtrl {
         return await this.houseRepository.create(houseData);
     }
 
-    async updateHouse(req: Request): Promise<House> {
-        const { id, name, address, owner } = req.body;
+    async updateHouse(id:string, req: Request): Promise<House> {
+        const { name, address, owner } = req.body;
         if (!id || !name || !address || !owner) {
             throw new RequestDataValidation("Data is missing");
         }
         const house = new House(name, address, owner, new Date(), new Date());
         house.id = id;
-        return await this.houseRepository.update(house);
+        return await this.houseRepository.update(id, house);
     }
 }

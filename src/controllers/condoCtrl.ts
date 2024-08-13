@@ -39,8 +39,8 @@ export class CondoCtrl {
         };
         return await this.condoRepository.create(condo);
     }
-    async updateCondo(req: Request): Promise<Condo> {
-        const { id, name, address, manager_id } = req.body;
+    async updateCondo(id:string, req: Request): Promise<Condo> {
+        const { name, address, manager_id } = req.body;
         if (!id || !name || !address) {
             throw new RequestDataValidation("Data is missing");
         }
@@ -56,6 +56,6 @@ export class CondoCtrl {
             createdAt: new Date(),
             updatedAt: new Date(),
         };
-        return await this.condoRepository.update(condo);
+        return await this.condoRepository.update(id, condo);
     }
 }

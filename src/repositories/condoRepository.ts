@@ -33,8 +33,8 @@ export class CondoRepository implements CRUDInterface{
           ...condo,
         };
     }
-    async update(condo: Condo): Promise<Condo> {
-        await this.knex('condos').where({ id: condo.id, updatedAt: new Date() }).update(condo);
+    async update(id:string, condo: Condo): Promise<Condo> {
+        await this.knex('condos').where({ id: id, updatedAt: new Date() }).update(condo);
         return {
           ...condo,
         };

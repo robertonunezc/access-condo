@@ -22,8 +22,8 @@ export class AppointmentRepository implements CRUDInterface {
         return data
     }
 
-    async update(data: Appointment): Promise<Appointment> {
-        return await this.db('appointments').where('id', data.id).update(data);
+    async update(appointmentId:string, data: Appointment): Promise<Appointment> {
+        return await this.db('appointments').where('id', appointmentId).update(data);
     }
 
     async delete(id: number): Promise<Appointment> {

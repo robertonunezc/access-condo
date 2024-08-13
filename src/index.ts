@@ -99,6 +99,19 @@ app.post('/appointment', async (req: Request, res: Response) => {
     }
 });
 
+app.patch('/appointment/:appointmentId', async (req: Request, res: Response) => {
+    console.log("[POST] /appointment/:appointmentId", req.body);
+    try {
+        const appointmentUpdated = await appointmentCtrl.update(req.params.appointmentId, req);
+        res.json(appointmentUpdated);
+    } catch (err) {
+        if (err instanceof Error) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(500).json({ message: "Internal server error" });
+    }
+})
+
 app.listen(port, () => {
     console.log('Server is running on port 3000');
 });

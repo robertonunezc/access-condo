@@ -31,8 +31,8 @@ export class HouseRepository implements CRUDInterface {
         return house;
     }
 
-    async update(house: House): Promise<House> {
-        await this.db('houses').where({ id: house.id }).update(house);
+    async update(id:string, house: House): Promise<House> {
+        await this.db('houses').where({ id: id }).update(house);
         return house;
     }
 

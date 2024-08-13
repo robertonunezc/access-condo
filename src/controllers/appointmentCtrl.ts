@@ -41,5 +41,16 @@ export class AppointmentCtrl {
     async getByHouse(houseId: string): Promise<Appointment[]> {
         return await this.appointmentRepository.findByHouseId(houseId);
     }
+
+    async update(appointmentId:string, req: Request): Promise<Appointment> {
+        // Implement an patch method to update any field of the appointment
+        const appointment = await this.appointmentRepository.findById(appointmentId);
+        if (!appointment) {
+            throw new RequestDataValidation("Appointment not found");
+        }
+        const appointmentData = {...req.body, updatedAt: new Date()};
+        return await this.appointmentRepository.update(appointmentId, appointmentData);
+    }
+    
    
 }
