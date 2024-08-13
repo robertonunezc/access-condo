@@ -38,6 +38,14 @@ export class AppointmentCtrl {
         return await this.appointmentRepository.create(appointment);
     }
 
+    async getByDate(date: Date): Promise<Appointment[]> {
+        return await this.appointmentRepository.findByDate(date);
+    }
+
+    async getByDateAndHouse(date: Date, houseId: string): Promise<Appointment[]> {
+        return await this.appointmentRepository.findByDateAndHouseId(date, houseId);
+    }
+
     async getByHouse(houseId: string): Promise<Appointment[]> {
         return await this.appointmentRepository.findByHouseId(houseId);
     }

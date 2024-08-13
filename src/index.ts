@@ -78,13 +78,24 @@ app.get('/appointment', async (req: Request, res: Response) => {
     res.json(appointments);
 }
 );
-app.get('/appointment/:houseId', async (req: Request, res: Response) => {
-    
+app.get('/appointment/house/:houseId', async (req: Request, res: Response) => {
+    if (req.query.date) {
+        const date = new Date(req.query.date.toString());
+
+        console.log("Getting appointments by date and house", date, req.params.houseId);
+        const appointments = await appointmentCtrl.getByDateAndHouse(date, req.params.houseId);
+        return res.json(appointments);
+    }
     const appointments = await appointmentCtrl.getByHouse(req.params.houseId);
+    return res.json(appointments);
+}
+);
+app.get('/appointment/date/:date', async (req: Request, res: Response) => {
+    const date = new Date(req.params.date);
+    const appointments = await appointmentCtrl.getByDate(date);
     res.json(appointments);
 }
 );
-
 
 app.post('/appointment', async (req: Request, res: Response) => {
     console.log("[POST] /appointment", req.body);

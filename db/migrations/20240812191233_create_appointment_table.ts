@@ -6,7 +6,7 @@ export async function up(knex: Knex): Promise<void> {
         table.increments('id').primary();
         table.string('personName').notNullable();
         table.string('carPlate').notNullable();
-        table.dateTime('scheduledDate').notNullable();
+        table.date('scheduledDate').notNullable();
         table.string('status').notNullable().defaultTo('CREATED');
         table.string('personPhysicalId').nullable();
         table.string('shareLink').nullable();
