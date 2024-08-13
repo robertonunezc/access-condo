@@ -78,6 +78,13 @@ app.get('/appointment', async (req: Request, res: Response) => {
     res.json(appointments);
 }
 );
+app.get('/appointment/:houseId', async (req: Request, res: Response) => {
+    
+    const appointments = await appointmentCtrl.getByHouse(req.params.houseId);
+    res.json(appointments);
+}
+);
+
 
 app.post('/appointment', async (req: Request, res: Response) => {
     console.log("[POST] /appointment", req.body);

@@ -10,7 +10,16 @@ export class AppointmentRepository implements CRUDInterface {
     }
 
     async create(data: Appointment): Promise<Appointment> {
-        return await this.db('appointments').insert(data);
+       const appointment = await this.db('appointments').insert({
+        personName: data.personName,
+        house_id: data.house.id,
+        carPlate: data.carPlate,
+        scheduledDate: data.scheduledDateTime,
+        status: data.status,
+        createdAt: new Date(),
+        updatedAt: new Date()
+    });
+        return data
     }
 
     async update(data: Appointment): Promise<Appointment> {
@@ -27,6 +36,10 @@ export class AppointmentRepository implements CRUDInterface {
 
     async findById(id: string): Promise<Appointment> {
         return await this.db('appointments').where('id', id).first();
+    }
+
+    async findByHouseId(houseId: string): Promise<Appointment[]> {
+        return await this.db('appointments').where('house_id', houseId);
     }
 
 }

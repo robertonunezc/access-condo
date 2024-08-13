@@ -37,5 +37,9 @@ export class AppointmentCtrl {
         };
         return await this.appointmentRepository.create(appointment);
     }
+
+    async getByHouse(houseId: string): Promise<Appointment[]> {
+        return await this.appointmentRepository.findByHouseId(houseId);
+    }
    
 }
