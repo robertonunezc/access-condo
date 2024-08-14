@@ -1,5 +1,5 @@
 import { Knex } from "knex";
-import { CRUDInterface, Entity } from "./crudInterface";
+import { CRUDInterface, } from "./crudInterface";
 import { Appointment } from "../entities/appointment";
 
 
@@ -10,7 +10,7 @@ export class AppointmentRepository implements CRUDInterface {
     }
 
     async create(data: Appointment): Promise<Appointment> {
-       const appointment = await this.db('appointments').insert({
+       await this.db('appointments').insert({
         personName: data.personName,
         house_id: data.house.id,
         carPlate: data.carPlate,

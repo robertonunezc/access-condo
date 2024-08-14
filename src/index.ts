@@ -1,13 +1,12 @@
 import express, { Express, Request, Response } from "express";
 import knex from "knex";
 import knexConfig from "../db/knex";
-import dotenv from "dotenv";
 import { UserCtrl, CondoCtrl, HouseCtrl, AppointmentCtrl, } from "./controllers";
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
 const db = knex(knexConfig);
-const dotEnv = dotenv.config();
+
 
 const userCtrl = new UserCtrl(db);
 const condoCtrl = new CondoCtrl(db);
@@ -60,6 +59,7 @@ app.get('/house', async (req: Request, res: Response) => {
     res.json(houses);
 }
 );
+
 app.post('/house', async (req: Request, res: Response) => { 
     console.log("[POST] /house", req.body);
     try {
@@ -78,6 +78,7 @@ app.get('/appointment', async (req: Request, res: Response) => {
     res.json(appointments);
 }
 );
+
 app.get('/appointment/house/:houseId', async (req: Request, res: Response) => {
     if (req.query.date) {
         const date = new Date(req.query.date.toString());
@@ -90,6 +91,7 @@ app.get('/appointment/house/:houseId', async (req: Request, res: Response) => {
     return res.json(appointments);
 }
 );
+
 app.get('/appointment/date/:date', async (req: Request, res: Response) => {
     const date = new Date(req.params.date);
     const appointments = await appointmentCtrl.getByDate(date);
