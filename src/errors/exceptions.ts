@@ -4,3 +4,9 @@ export class RequestDataValidation extends Error {
       super(message);
     }
   }
+
+export class FailedToUpload extends Error {
+    constructor(public message: string) {
+      super(message);
+    }
+  }

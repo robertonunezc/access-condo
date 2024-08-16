@@ -1,7 +1,7 @@
 import { Knex } from "knex";
-import { User } from "../entities/user";
+import { User, UserType } from "../entities/user";
 import { UserRepository } from "../repositories/userRepository";
-import { Request, Response } from "express";
+import { Request } from "express";
 import { RequestDataValidation } from "../errors/exceptions";
 
 export class UserCtrl {
@@ -22,7 +22,7 @@ export class UserCtrl {
         throw new RequestDataValidation("Data is missing");
       }
 
-    const user = new User(name, email, phone, new Date(), new Date());
+    const user = new User(name, email, phone, [UserType.USER], new Date(), new Date());
     return  await this.userRepository.create(user);
   }
 }

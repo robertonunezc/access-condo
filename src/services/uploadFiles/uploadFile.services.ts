@@ -3,52 +3,80 @@ import {
   ListBucketsCommand,
   PutObjectCommand,
 } from "@aws-sdk/client-s3";
-import dotenv from "dotenv";
-// Configure AWS SDK with your credentials
-const region = dotenv.config().parsed?.AWS_REGION;
-const accessKeyId = dotenv.config().parsed?.AWS_ACCESS_KEY_ID;
-const secretAccessKey = dotenv.config().parsed?.AWS_SECRET_ACCESS_KEY;
+import { Readable } from "stream";
+import { FailedToUpload } from "../../errors/exceptions";
+
+export interface UploadBackend {
+  upload(
+    path: string,
+    stream: Readable,
+    contentType: string,
+    fileName?: string
+  ): Promise<string>;
+
+  download(path: string): Promise<DownloadResponse>;
+
+  inspect(path: string, modifiedAfter?: Date): Promise<FileMetadata | null>;
+
+  nativeUrl(path: string): Promise<string>;
+}
+export interface FileMetadata {
+  fileName: string;
+  contentType: string;
+  sizeBytes: number;
+}
+export interface DownloadResponse {
+  stream: Readable;
+  metadata: FileMetadata;
+}
 export interface S3Config {
   region: string;
   accessKeyId: string;
   secretAccessKey: string;
   bucketName: string;
 }
-export class UploadFile {
-  private s3Client: S3Client;
-  private config: S3Config;
-  constructor(config: S3Config) {
-    this.s3Client = new S3Client({
-      region,
-      credentials: {
-        accessKeyId: accessKeyId!,
-        secretAccessKey: secretAccessKey!,
-      },
-    });
-    this.config = config;
-  }
+export class UploadFile  implements UploadBackend {
+
+  constructor(
+    readonly client: S3Client,
+    readonly bucket: string,
+    readonly prefix: string
+  ) {}
+
 
   async listBuckets() {
     try {
-      const data = await this.s3Client.send(new ListBucketsCommand({}));
+      const data = await this.client.send(new ListBucketsCommand({}));
       console.log("Success", data.Buckets);
       return data.Buckets;
     } catch (err) {
       console.log("Error", err);
     }
   }
-  async uploadFile(file: File, fileName: string) {
+  async upload(path: string, stream: Readable, contentType: string, fileName?: string): Promise<string> {
     const params = {
-      Bucket:this.config.bucketName,
+      Bucket:this.bucket,
       Key: fileName,
-      Body: file,
+      Body: stream,
     };
     try {
-      const data = await this.s3Client.send(new PutObjectCommand(params));
+        const data = await this.client.send(new PutObjectCommand(params));
       console.log("Success", data);
-      return data;
+      return fileName ?? "file-name";
     } catch (err) {
       console.log("Error", err);
+      throw new FailedToUpload("Failed to upload file");
     }
+  }
+
+  async download(path: string): Promise<DownloadResponse> {
+    throw new Error(`Method not implemented.${path}`);
+  }
+  
+  async inspect(path: string, modifiedAfter?: Date): Promise<FileMetadata | null> {
+    throw new Error(`Method not implemented.${path}, modifiedAfter: ${modifiedAfter}`);
+  }
+  async nativeUrl(path: string): Promise<string> {
+    throw new Error(`Method not implemented.${path}`);
   }
 }

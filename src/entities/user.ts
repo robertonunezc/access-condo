@@ -1,6 +1,6 @@
 import { Entity } from "../repositories/crudInterface";
 
-enum UserType {
+export enum UserType {
     ADMIN = "ADMIN",
     USER = "USER",
     CONDO_OWNER = "CONDO_OWNER",
