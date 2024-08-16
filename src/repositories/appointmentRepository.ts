@@ -22,7 +22,7 @@ export class AppointmentRepository implements CRUDInterface {
         return data
     }
 
-    async update(appointmentId:string, data: Appointment): Promise<Appointment> {
+    async update(appointmentId:string, data: Partial<Appointment>): Promise<Appointment> {
         return await this.db('appointments').where('id', appointmentId).update(data);
     }
 

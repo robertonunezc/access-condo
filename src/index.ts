@@ -2,16 +2,36 @@ import express, { Express, Request, Response } from "express";
 import knex from "knex";
 import knexConfig from "../db/knex";
 import { UserCtrl, CondoCtrl, HouseCtrl, AppointmentCtrl, } from "./controllers";
+import { UploadFile } from "./services/uploadFiles/uploadFile.services";
+import { S3Client } from "@aws-sdk/client-s3";
+import dotenv from 'dotenv';
+import path from 'path';
+import multer from "multer";
 
 const app: Express = express();
 const port = process.env.PORT || 3000;
+// Configure Multer to store files in memory (you can also configure it to save to disk)
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
+
 const db = knex(knexConfig);
+const dotEnv = dotenv.config({
+    path: path.resolve(__dirname, '../.env'),
+  });
 
+const s3Client = new S3Client({
+    credentials: {
+        accessKeyId: dotEnv.parsed?.AWS_ACCESS_KEY_ID ?? "fake",
+        secretAccessKey: dotEnv.parsed?.AWS_SECRET_ACCESS_KEY ?? "fake"
+    },
+    region: dotEnv.parsed?.AWS_REGION ?? "us-east-1"});
 
+const bucket = dotEnv.parsed?.AWS_BUCKET_NAME?? "condo-app-uploads";
+const uploadFileService = new UploadFile(s3Client,bucket, "images");
 const userCtrl = new UserCtrl(db);
 const condoCtrl = new CondoCtrl(db);
 const houseCtrl = new HouseCtrl(db);
-const appointmentCtrl = new AppointmentCtrl(db);
+const appointmentCtrl = new AppointmentCtrl(db,uploadFileService);
 
 app.use(express.json());
 
@@ -112,7 +132,7 @@ app.post('/appointment', async (req: Request, res: Response) => {
     }
 });
 
-app.patch('/appointment/:appointmentId', async (req: Request, res: Response) => {
+app.patch('/appointment/:appointmentId',upload.single('file'), async (req: Request, res: Response) => {
     console.log("[POST] /appointment/:appointmentId", req.body);
     try {
         const appointmentUpdated = await appointmentCtrl.update(req.params.appointmentId, req);

@@ -9,7 +9,7 @@ import { FailedToUpload } from "../../errors/exceptions";
 export interface UploadBackend {
   upload(
     path: string,
-    stream: Readable,
+    stream: Buffer,
     contentType: string,
     fileName?: string
   ): Promise<string>;
@@ -53,7 +53,7 @@ export class UploadFile  implements UploadBackend {
       console.log("Error", err);
     }
   }
-  async upload(path: string, stream: Readable, contentType: string, fileName?: string): Promise<string> {
+  async upload(path: string, stream: Buffer, contentType: string, fileName?: string): Promise<string> {
     const params = {
       Bucket:this.bucket,
       Key: fileName,

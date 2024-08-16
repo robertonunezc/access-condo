@@ -3,14 +3,17 @@ import { AppointmentRepository, HouseRepository } from '../repositories';
 import { Appointment, AppointmentStatus } from '../entities/appointment';
 import { Request } from 'express';
 import { RequestDataValidation } from '../errors/exceptions';
+import { UploadFile } from '../services/uploadFiles/uploadFile.services';
+import { randomUUID } from 'crypto';
 
 export class AppointmentCtrl {
     private appointmentRepository: AppointmentRepository;
     private houseRepository: HouseRepository;
-
-    constructor(db: Knex) {
+    private uploadFileService: UploadFile;
+    constructor(db: Knex, uploadFileService: UploadFile) {
         this.appointmentRepository = new AppointmentRepository(db);
         this.houseRepository = new HouseRepository(db);
+        this.uploadFileService = uploadFileService;
     }
 
     async getAllAppointments():Promise<Appointment[]> {
@@ -56,9 +59,27 @@ export class AppointmentCtrl {
         if (!appointment) {
             throw new RequestDataValidation("Appointment not found");
         }
-        const appointmentData = {...req.body, updatedAt: new Date()};
+        if(req.file){
+            // Implement a method to upload a file
+            this.uploadUserCredential(appointmentId, req.file.buffer);
+        }
+        const appointmentData:Appointment = {...req.body, updatedAt: new Date()};
         return await this.appointmentRepository.update(appointmentId, appointmentData);
     }
     
-   
+    async uploadUserCredential(appointmentId: string, stream: Buffer): Promise<string> {
+        const appointment = await this.appointmentRepository.findById(appointmentId);
+        if (!appointment) {
+            throw new RequestDataValidation("Appointment not found");
+        }
+        const key = randomUUID();
+        const path = `appointments/${appointment.house.id}/${key}`;
+        const fileName = await this.uploadFileService.upload(path, stream, 'application/jpg', key);
+        const data:Partial<Appointment>  = {
+            personPhysicalId: fileName,
+            updatedAt: new Date(),
+        };
+        await this.appointmentRepository.update(appointmentId,data);
+        return fileName;
+    }
 }
