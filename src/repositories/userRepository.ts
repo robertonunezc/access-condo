@@ -19,7 +19,15 @@ export class UserRepository implements CRUDInterface{
     return users.map((user) => new User(user.name, user.email, user.phone,user.type, new Date(), new Date()));
   }
     async create(user: User): Promise<User> {
-      const userCreated = await this.knex('users').insert(user).select('*');
+      console.log("UserRepository.create", user);
+      const userCreated = await this.knex('users').insert({
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        type: User.convertUsersTypeToString(user.type),
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      }).select('*');
         return userCreated[0];
     }
     async update(id: string, user: User): Promise<User> {

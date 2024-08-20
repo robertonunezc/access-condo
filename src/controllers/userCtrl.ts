@@ -18,11 +18,16 @@ export class UserCtrl {
   async createUser(req: Request):Promise<User> {
     console.log("[POST] /user controller", req.body);
     const { name, email, phone } = req.body;
+    const userTypes: UserType[] = [UserType.USER];
     if (!name || !email || !phone) {
         throw new RequestDataValidation("Data is missing");
       }
-
-    const user = new User(name, email, phone, [UserType.USER], new Date(), new Date());
+    if(req.body.type !== undefined) {
+     const newTypes = req.body.type.split("|").map((type: string) => User.getUserType(type));
+      userTypes.push(...newTypes);
+    }
+    console.log("UserCtrl.createUser", name, email, phone, userTypes);
+    const user = new User(name, email, phone, userTypes, new Date(), new Date());
     return  await this.userRepository.create(user);
   }
 }
