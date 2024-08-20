@@ -39,16 +39,14 @@ export class AppointmentRepository implements CRUDInterface {
     }
 
     async findByHouseId(houseId: string): Promise<Appointment[]> {
-        return await this.db('appointments').where('house_id', houseId);
+        return await this.db('appointments').join('houses','id', houseId).where('house_id', houseId).select('*');
     }
     async findByDate(date: Date): Promise<Appointment[]> {
         return await this.db('appointments').where('scheduledDate', date);
     }
     async findByDateAndHouseId(date: Date, houseId: string): Promise<Appointment[]> {
         const formattedDate = date.toISOString().slice(0, 10);
-        const query = this.db('appointments').where('scheduledDate', formattedDate).andWhere('house_id', houseId)
-        const sql = query.toSQL();
-        console.log("SQL", sql);
+        const query = this.db<Appointment>('appointments').join('houses','houses.id', 'appointments.house_id').where('scheduledDate', formattedDate).andWhere('house_id', houseId).select('*');
         return await query ;
     }
 }

@@ -50,7 +50,9 @@ export class AppointmentCtrl {
     }
 
     async getByHouse(houseId: string): Promise<Appointment[]> {
-        return await this.appointmentRepository.findByHouseId(houseId);
+        const appointments = await this.appointmentRepository.findByHouseId(houseId);
+        console.log("Appointments", appointments);
+        return appointments;
     }
 
     async update(appointmentId:string, req: Request): Promise<Appointment> {
