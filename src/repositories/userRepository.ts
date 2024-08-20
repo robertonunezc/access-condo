@@ -16,14 +16,14 @@ export class UserRepository implements CRUDInterface{
   }
   async findAll(): Promise<User[]> {
     const users = await this.knex('users');
-    return users.map((user) => new User(user.name, user.email, user.phone, new Date(), new Date()));
+    return users.map((user) => new User(user.name, user.email, user.phone,user.type, new Date(), new Date()));
   }
     async create(user: User): Promise<User> {
-        const [id] = await this.knex('users').insert(user);
-        return new User(user.name, user.email, user.phone, new Date(), new Date());
+      const userCreated = await this.knex('users').insert(user).select('*');
+        return userCreated[0];
     }
     async update(id: string, user: User): Promise<User> {
-        await this.knex('users').where({ id: id }).update(user);
-        return new User(user.name, user.email, user.phone, user.createdAt, new Date());
+        const userCreated= await this.knex('users').where({ id: id }).update(user).select('*');
+        return userCreated[0];
     }
 }

@@ -12,7 +12,19 @@ const app: Express = express();
 const port = process.env.PORT || 3000;
 // Configure Multer to store files in memory (you can also configure it to save to disk)
 const storage = multer.memoryStorage();
-const upload = multer({ storage: storage });
+const upload = multer({
+    storage: storage,
+    limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB limit
+    fileFilter: (req, file, cb) => {
+      if (file.mimetype === 'image/jpeg' || file.mimetype === 'image/png') {
+        cb(null, true);
+      } else {
+        cb(null, false);
+      }
+    },
+  });
+  
+
 
 const db = knex(knexConfig);
 const dotEnv = dotenv.config({
