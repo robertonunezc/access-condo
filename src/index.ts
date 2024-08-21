@@ -7,7 +7,8 @@ import { S3Client } from "@aws-sdk/client-s3";
 import dotenv from 'dotenv';
 import path from 'path';
 import multer from "multer";
-
+import { logger } from "./infrastructure/logger";
+import { setupSwagger } from "./api-doc/swagger";
 const app: Express = express();
 const port = process.env.PORT || 3000;
 // Configure Multer to store files in memory (you can also configure it to save to disk)
@@ -54,7 +55,7 @@ app.get('/user',async (req:Request, res: Response) => {
 });
 
 app.post('/user', async (req: Request, res: Response) => {
-    console.log("[POST] /user", req.body);
+    logger.log("[POST] /user", req.body);
     try {
         const userCreated = await userCtrl.createUser(req);
         res.json(userCreated);
@@ -74,7 +75,7 @@ app.get('/condo', async (req: Request, res: Response) => {
 });
 
 app.post('/condo', async (req: Request, res: Response) => {
-    console.log("[POST] /condo", req.body);
+    logger.log("[POST] /condo", req.body);
     try {
         const condoCreated = await condoCtrl.createCondo(req);
         res.json(condoCreated);
@@ -93,7 +94,7 @@ app.get('/house', async (req: Request, res: Response) => {
 );
 
 app.post('/house', async (req: Request, res: Response) => { 
-    console.log("[POST] /house", req.body);
+    logger.log("[POST] /house", req.body);
     try {
         const houseCreated = await houseCtrl.createHouse(req);
         res.json(houseCreated);
@@ -115,7 +116,7 @@ app.get('/appointment/house/:houseId', async (req: Request, res: Response) => {
     if (req.query.date) {
         const date = new Date(req.query.date.toString());
 
-        console.log("Getting appointments by date and house", date, req.params.houseId);
+        logger.log("Getting appointments by date and house", date, req.params.houseId);
         const appointments = await appointmentCtrl.getByDateAndHouse(date, req.params.houseId);
         return res.json(appointments);
     }
@@ -132,7 +133,7 @@ app.get('/appointment/date/:date', async (req: Request, res: Response) => {
 );
 
 app.post('/appointment', async (req: Request, res: Response) => {
-    console.log("[POST] /appointment", req.body);
+    logger.log("[POST] /appointment", req.body);
     try {
         const appointmentCreated = await appointmentCtrl.createAppointment(req);
         res.json(appointmentCreated);
@@ -145,7 +146,7 @@ app.post('/appointment', async (req: Request, res: Response) => {
 });
 
 app.patch('/appointment/:appointmentId',upload.single('file'), async (req: Request, res: Response) => {
-    console.log("[POST] /appointment/:appointmentId", req.body);
+    logger.log("[POST] /appointment/:appointmentId", req.body);
     try {
         const appointmentUpdated = await appointmentCtrl.update(req.params.appointmentId, req);
         res.json(appointmentUpdated);
@@ -157,7 +158,9 @@ app.patch('/appointment/:appointmentId',upload.single('file'), async (req: Reque
     }
 })
 
+setupSwagger(app);
+
 app.listen(port, () => {
-    console.log('Server is running on port 3000');
+    logger.log('Server is running on port 3000');
 });
 
