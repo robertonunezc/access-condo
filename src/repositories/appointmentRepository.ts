@@ -10,7 +10,7 @@ export class AppointmentRepository implements CRUDInterface {
     }
 
     async create(data: Appointment): Promise<Appointment> {
-       await this.db('appointments').insert({
+      const appointment:Appointment[] =  await this.db('appointments').insert({
         personName: data.personName,
         house_id: data.house.id,
         carPlate: data.carPlate,
@@ -19,11 +19,13 @@ export class AppointmentRepository implements CRUDInterface {
         createdAt: new Date(),
         updatedAt: new Date()
     });
-        return data
+    
+        return await this.findById(appointment[0].toString());
     }
 
     async update(appointmentId:string, data: Partial<Appointment>): Promise<Appointment> {
-        return await this.db('appointments').where('id', appointmentId).update(data);
+        const updated = await this.db('appointments').where('id', appointmentId).update(data);
+        return this.findById(updated.toString());
     }
 
     async delete(id: number): Promise<Appointment> {

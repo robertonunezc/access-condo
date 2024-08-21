@@ -131,7 +131,22 @@ app.get('/appointment/date/:date', async (req: Request, res: Response) => {
     res.json(appointments);
 }
 );
-
+/*
+    this endpoint is for the sharable link in case the user wants to share the appointment
+    completion with the visitor.
+*/
+app.post('/appointment/dummy', async (req: Request, res: Response) => {
+    console.log("[POST] /appointment/dummy", req.body);
+    try {
+        const appointmentCreated = await appointmentCtrl.createDummyAppointment(req);
+        res.json(appointmentCreated);
+    } catch (err) {
+        if (err instanceof Error) {
+            return res.status(400).json({ message: err.message });
+        }
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
 app.post('/appointment', async (req: Request, res: Response) => {
     logger.log("[POST] /appointment", req.body);
     try {
@@ -144,6 +159,7 @@ app.post('/appointment', async (req: Request, res: Response) => {
         res.status(500).json({ message: "Internal server error" });
     }
 });
+
 
 app.patch('/appointment/:appointmentId',upload.single('file'), async (req: Request, res: Response) => {
     logger.log("[POST] /appointment/:appointmentId", req.body);

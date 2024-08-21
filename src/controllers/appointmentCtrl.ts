@@ -5,6 +5,7 @@ import { Request } from 'express';
 import { RequestDataValidation } from '../errors/exceptions';
 import { UploadFile } from '../services/uploadFiles/uploadFile.services';
 import { randomUUID } from 'crypto';
+import dotenv from 'dotenv';
 
 export class AppointmentCtrl {
     private appointmentRepository: AppointmentRepository;
@@ -40,7 +41,31 @@ export class AppointmentCtrl {
         };
         return await this.appointmentRepository.create(appointment);
     }
+    async createDummyAppointment(req:Request):Promise<Appointment>{
+        const {houseId} = req.body;
+        console.log("HouseId", houseId);
+        const house = await this.houseRepository.findById(houseId);
+        if (!house) {
+            throw new RequestDataValidation("House not found");
+        }
+        const appointment:Appointment = {
+            personName: "Tu Nombre",
+            house,
+            carPlate: "Matricula Carro",
+            scheduledDateTime: new Date(),
+            status: AppointmentStatus.CREATED,  // default status
+            createdAt: new Date(),
+            updatedAt: new Date(),
 
+        };
+        const createdAppointment = await this.appointmentRepository.create(appointment);
+        console.log("Created Appointment", createdAppointment);
+        const updatedAppointment = await this.appointmentRepository.update(createdAppointment.id!,{
+            shareLink: `${dotenv.config().parsed?.WEB_HOST}/appointment/${createdAppointment.id}`
+        });
+        console.log("Updated Appointment", updatedAppointment);
+        return updatedAppointment;
+    }
     async getByDate(date: Date): Promise<Appointment[]> {
         return await this.appointmentRepository.findByDate(date);
     }
