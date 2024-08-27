@@ -37,7 +37,14 @@ export class AppointmentRepository implements CRUDInterface {
     }
 
     async findById(id: string): Promise<Appointment> {
-        return await this.db('appointments').where('id', id).first();
+        const appointment = await this.db('appointments')
+                            .where('appointments.id', id)
+                            .first()
+                            
+        appointment.house = {
+            id: appointment.house_id,
+        }
+        return appointment;
     }
 
     async findByHouseId(houseId: string): Promise<Appointment[]> {
@@ -47,7 +54,7 @@ export class AppointmentRepository implements CRUDInterface {
         return await this.db('appointments').where('scheduledDate', date);
     }
     async findByDateAndHouseId(date: Date, houseId: string): Promise<Appointment[]> {
-        const formattedDate = date.toISOString().slice(0, 10);
+        const formattedDate = date.toISOString().slice(0, 10);// TO REMOVE TIME FROM DATE
         const query = this.db<Appointment>('appointments').join('houses','houses.id', 'appointments.house_id').where('scheduledDate', formattedDate).andWhere('house_id', houseId).select('*');
         return await query ;
     }

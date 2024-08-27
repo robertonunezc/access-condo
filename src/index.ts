@@ -162,7 +162,7 @@ app.post('/appointment', async (req: Request, res: Response) => {
 
 
 app.patch('/appointment/:appointmentId',upload.single('file'), async (req: Request, res: Response) => {
-    logger.log("[POST] /appointment/:appointmentId", req.body);
+    logger.log("[PATCH] /appointment/:appointmentId", req.body, req.file);
     try {
         const appointmentUpdated = await appointmentCtrl.update(req.params.appointmentId, req);
         res.json(appointmentUpdated);

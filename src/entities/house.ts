@@ -2,13 +2,13 @@ import { Entity } from "../repositories/crudInterface";
 import { Condo } from "./condo";
 import { User } from "./user";
 
-export interface House extends Entity {
+export interface IHouse extends Entity {
     owner: User;
     address: string;
     condo: Condo;   
 }
 
-export class House implements House {
+export class House implements IHouse {
     constructor(
         public owner: User,
         public address: string,

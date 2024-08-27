@@ -66,6 +66,7 @@ export class AppointmentCtrl {
         console.log("Updated Appointment", updatedAppointment);
         return updatedAppointment;
     }
+
     async getByDate(date: Date): Promise<Appointment[]> {
         return await this.appointmentRepository.findByDate(date);
     }
@@ -96,14 +97,15 @@ export class AppointmentCtrl {
     
     async uploadUserCredential(appointmentId: string, stream: Buffer): Promise<string> {
         const appointment = await this.appointmentRepository.findById(appointmentId);
+        console.log("Appointment", appointment);
         if (!appointment) {
             throw new RequestDataValidation("Appointment not found");
         }
         const key = randomUUID();
-        const path = `appointments/${appointment.house.id}/${key}`;
+        const path = `appointments/${appointment.house.id}/`;
         const fileName = await this.uploadFileService.upload(path, stream, 'application/jpg', key);
         const data:Partial<Appointment>  = {
-            personPhysicalId: fileName,
+            personPhysicalId: `${path}${fileName}.jpg`,
             updatedAt: new Date(),
         };
         await this.appointmentRepository.update(appointmentId,data);
