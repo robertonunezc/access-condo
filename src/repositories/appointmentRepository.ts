@@ -24,8 +24,8 @@ export class AppointmentRepository implements CRUDInterface {
     }
 
     async update(appointmentId:string, data: Partial<Appointment>): Promise<Appointment> {
-        const updated = await this.db('appointments').where('id', appointmentId).update(data);
-        return this.findById(updated.toString());
+        await this.db('appointments').where('id', appointmentId).update(data);
+        return this.findById(appointmentId);
     }
 
     async delete(id: number): Promise<Appointment> {

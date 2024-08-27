@@ -87,11 +87,13 @@ export class AppointmentCtrl {
         if (!appointment) {
             throw new RequestDataValidation("Appointment not found");
         }
+        const appointmentData:Appointment = {...req.body, updatedAt: new Date()};
+
         if(req.file){
             // Implement a method to upload a file
-            this.uploadUserCredential(appointmentId, req.file.buffer);
+           const filePath = await this.uploadUserCredential(appointmentId, req.file.buffer);
+           appointmentData.personPhysicalId = filePath;
         }
-        const appointmentData:Appointment = {...req.body, updatedAt: new Date()};
         return await this.appointmentRepository.update(appointmentId, appointmentData);
     }
     
@@ -104,11 +106,6 @@ export class AppointmentCtrl {
         const key = randomUUID();
         const path = `appointments/${appointment.house.id}/`;
         const fileName = await this.uploadFileService.upload(path, stream, 'application/jpg', key);
-        const data:Partial<Appointment>  = {
-            personPhysicalId: `${path}${fileName}.jpg`,
-            updatedAt: new Date(),
-        };
-        await this.appointmentRepository.update(appointmentId,data);
-        return fileName;
+        return `${path}${fileName}.jpg`;
     }
 }
