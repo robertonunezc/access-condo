@@ -25,6 +25,10 @@ export class AppointmentCtrl {
         if (!personName || !houseId || !carPlate || !scheduledDateTime) {
             throw new RequestDataValidation("Data is missing");
         }
+        const scheduledDateTimeFormated = new Date(scheduledDateTime);
+        if( scheduledDateTimeFormated < new Date()){
+            throw new RequestDataValidation("Scheduled date is in the past");
+        }
         const house = await this.houseRepository.findById(houseId);
         if (!house) {
             throw new RequestDataValidation("House not found");

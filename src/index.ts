@@ -7,8 +7,7 @@ import { S3Client } from "@aws-sdk/client-s3";
 import dotenv from 'dotenv';
 import path from 'path';
 import multer from "multer";
-import { logger } from "./infrastructure/logger";
-import { setupSwagger } from "./api-doc/swagger";
+import { logger } from "./infra/logger";
 const app: Express = express();
 const port = process.env.PORT || 3000;
 // Configure Multer to store files in memory (you can also configure it to save to disk)
@@ -116,7 +115,7 @@ app.get('/appointment/house/:houseId', async (req: Request, res: Response) => {
     if (req.query.date) {
         const date = new Date(req.query.date.toString());
 
-        logger.log("Getting appointments by date and house", date, req.params.houseId);
+        logger.log("Getting appointments by date and house", req.params.houseId);
         const appointments = await appointmentCtrl.getByDateAndHouse(date, req.params.houseId);
         return res.json(appointments);
     }
@@ -174,9 +173,8 @@ app.patch('/appointment/:appointmentId',upload.single('file'), async (req: Reque
     }
 })
 
-setupSwagger(app);
 
 app.listen(port, () => {
-    logger.log('Server is running on port 3000');
+    logger.log('Server is running on port', port);
 });
 
