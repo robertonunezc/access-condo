@@ -1,6 +1,7 @@
 import { Knex } from "knex";
-import { CRUDInterface, Entity } from "./crudInterface";
+import { CRUDInterface } from "./crudInterface";
 import { House } from "../entities/house";
+import { Appointment } from "../entities/appointment";
 
 
 export class HouseRepository implements CRUDInterface {
@@ -21,7 +22,7 @@ export class HouseRepository implements CRUDInterface {
     }
 
     async create(house: House): Promise<House> {
-        const [id] = await this.db('houses').insert({
+         await this.db('houses').insert({
             address: house.address,
             condo_id: house.condo.id,
             owner_id: house.owner.id,
@@ -38,5 +39,9 @@ export class HouseRepository implements CRUDInterface {
 
     async delete(id: string): Promise<House> {
         return await this.db('houses').where({ id }).del();
+    }
+
+    async getLastAppointments(id: string): Promise<Appointment[]> {
+        return await this.db('appointments').where({ house_id: id }).orderBy('createdAt', 'desc').limit(5);
     }
 }

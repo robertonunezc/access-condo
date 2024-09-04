@@ -62,6 +62,12 @@ app.get('/house', async (req: Request, res: Response) => {
     res.json(houses);
 }
 );
+app.get('/house/:id/appointments', async (req: Request, res: Response) => {
+    const houseId: string = req.params.id;
+    const houses = await houseCtrl.getHouseAppointments(houseId);
+    res.json(houses);
+}
+);
 
 app.post('/house', async (req: Request, res: Response) => { 
     logger.log("[POST] /house", req.body);

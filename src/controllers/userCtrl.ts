@@ -30,5 +30,6 @@ export class UserCtrl {
     const user = new User(name, email, phone, userTypes, new Date(), new Date());
     return  await this.userRepository.create(user);
   }
+
 }
 

@@ -3,7 +3,7 @@ import { House } from "../entities/house";
 import { CondoRepository, HouseRepository, UserRepository } from "../repositories";
 import { RequestDataValidation } from "../errors/exceptions";
 import { Request } from "express";
-import { Condo } from "../entities/condo";
+import { Appointment } from "../entities/appointment";
 
 export class HouseCtrl {
     private houseRepository: HouseRepository;
@@ -51,5 +51,8 @@ export class HouseCtrl {
         const house = new House(name, address, owner, new Date(), new Date());
         house.id = id;
         return await this.houseRepository.update(id, house);
+    }
+    async getHouseAppointments(id: string): Promise<Appointment[]> {
+        return await this.houseRepository.getLastAppointments(id);
     }
 }
