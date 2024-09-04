@@ -20,6 +20,7 @@ export class AppointmentCtrl {
     async getAllAppointments():Promise<Appointment[]> {
         return await this.appointmentRepository.findAll();
     }
+
    async createAppointment(req: Request):Promise<Appointment>{
         const { personName, houseId,carPlate, scheduledDateTime  } = req.body;
         if (!personName || !houseId || !carPlate || !scheduledDateTime) {
@@ -33,6 +34,7 @@ export class AppointmentCtrl {
         if (!house) {
             throw new RequestDataValidation("House not found");
         }
+
         const appointment:Appointment = {
             personName,
             house,
@@ -111,5 +113,18 @@ export class AppointmentCtrl {
         const path = `appointments/${appointment.house.id}/`;
         const fileName = await this.uploadFileService.upload(path, stream, 'application/jpg', key);
         return `${path}${fileName}.jpg`;
+    }
+    async checkOrSetAppointmentStatus(appointmentId: string): Promise<Appointment> {
+        const appointment = await this.appointmentRepository.findById(appointmentId);
+        if (!appointment) {
+            throw new RequestDataValidation("Appointment not found");
+        }
+        const status = appointment.status;
+        if (status === AppointmentStatus.DONE) {
+            throw new RequestDataValidation("Appointment already checked");
+        }
+        await this.appointmentRepository.update(appointmentId, {status: AppointmentStatus.DONE});
+        const updatedAppointment = await this.appointmentRepository.findById(appointmentId);
+        return updatedAppointment;
     }
 }

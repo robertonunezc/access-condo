@@ -111,6 +111,20 @@ app.get('/appointment', async (req: Request, res: Response) => {
 }
 );
 
+app.get('/appointment/:appointmentId/check-status', async (req: Request, res: Response) => {
+    try {
+        const appointment = await appointmentCtrl.checkOrSetAppointmentStatus(req.params.appointmentId);
+        return res.json(appointment);
+    } catch (error) {
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
+        return res.status(500).json({ message: "Internal server error" });  
+    }
+
+}
+);
+
 app.get('/appointment/house/:houseId', async (req: Request, res: Response) => {
     if (req.query.date) {
         const date = new Date(req.query.date.toString());
