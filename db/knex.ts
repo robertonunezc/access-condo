@@ -7,11 +7,11 @@ const dotEnv = dotenv.config({
 const knexConfig: Knex.Config = {
     client: 'mysql',
     connection: {
-      host: dotEnv.parsed?.DATABASE_HOST || 'localhost',
+      host: dotEnv.parsed?.DATABASE_HOST || 'db',
       port: parseInt(dotEnv.parsed?.DATABASE_PORT as string) || 3306,
-      user: dotEnv.parsed?.DATABASE_USER || 'pedro',
-      password: dotEnv.parsed?.DATABASE_PASSWORD || 'password',
-      database: dotEnv.parsed?.DATABASE_NAME || 'mydb',
+      user: dotEnv.parsed?.DATABASE_USER || 'condo',
+      password: dotEnv.parsed?.DATABASE_PASSWORD || 'condo123.',
+      database: dotEnv.parsed?.DATABASE_NAME || 'condo',
     },
     migrations: {
         tableName: 'migrations',
