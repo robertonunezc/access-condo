@@ -13,6 +13,10 @@ interface UserInterface extends Entity {
     email: string;
     phone: string;
     type: UserType[];
+    username:string;
+    password:string;
+    token:string;
+    createdAt: Date;
 }
 
 export class User implements UserInterface {
@@ -23,7 +27,11 @@ export class User implements UserInterface {
         public type: UserType[],
         public createdAt: Date,
         public updatedAt: Date,
+        public username: string,
+        public password: string,
+        public token: string,
         public id?: string,
+      
     ) {}
     static getUserType(type: string): UserType {
         switch (type.toUpperCase()) {

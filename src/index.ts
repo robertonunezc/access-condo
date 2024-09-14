@@ -5,7 +5,7 @@ import { UserCtrl, CondoCtrl, HouseCtrl, } from "./controllers";
 import { logger } from "./infra/logger";
 import appointmetRoutes from "./routes/appointments.routes";
 import userRoutes from "./routes/users.routes";
-
+import { authenticateToken } from "./auth/auth";
 const app: Express = express();
 const port = process.env.PORT || 3000;
 
@@ -19,7 +19,7 @@ app.use(express.json());
 app.use('api/',appointmetRoutes);
 app.use('api/',userRoutes);
 
-app.get('/user',async (req:Request, res: Response) => {
+app.get('/user',authenticateToken,async (req:Request, res: Response) => {
     const users = await userCtrl.getAllUsers();
     res.json(users);
 });
