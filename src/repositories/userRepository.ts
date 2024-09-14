@@ -23,7 +23,7 @@ export class UserRepository implements CRUDInterface{
       if(await this.checkUserExists(user.email, user.username)){
         throw new RequestDataValidation("Please, try again. User already exists");
       }
-      const userCreated = await this.knex('users').insert({
+      const userCreatedId = await this.knex('users').insert({
         name: user.name,
         email: user.email,
         phone: user.phone,
@@ -34,6 +34,7 @@ export class UserRepository implements CRUDInterface{
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
       }).select('*');
+      const userCreated = await this.knex<User>('users').where({ id: userCreatedId[0] }).select('*');
         return userCreated[0];
     }
     async checkUserExists(email: string, username:string): Promise<boolean> {
