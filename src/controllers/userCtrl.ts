@@ -5,9 +5,15 @@ import { Request } from "express";
 import { RequestDataValidation } from "../errors/exceptions";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import dotenv from "dotenv";
+import path from "path";
+const dotEnv = dotenv.config({
+  path: path.resolve(__dirname, '../../.env'),
+});
+const jwtSecret = dotEnv.parsed?.JWT_SECRET;
+
 export class UserCtrl {
   private userRepository: UserRepository;
-
   constructor(db:Knex) {
     this.userRepository = new UserRepository(db);
   }
@@ -27,10 +33,12 @@ export class UserCtrl {
      const newTypes = req.body.type.split("|").map((type: string) => User.getUserType(type));
       userTypes.push(...newTypes);
     }
-    console.log("UserCtrl.createUser", name, email, phone, userTypes);
     const username = req.body.username;
+    console.log("UserCtrl.createUser", name, email, phone, userTypes, username, req.body.password);
+
     const password = await this.hashPassword(req.body.password);
-    const token = jwt.sign({ username, password }, process.env.JWT_SECRET as string, {expiresIn: "24h" });
+    console.log("JWT", username, password, jwtSecret);
+    const token = jwt.sign({ username, password },jwtSecret as string, {expiresIn: "24h" });
     
     const user = new User(name, email, phone, userTypes, new Date(), new Date(), username, password, token);
     return  await this.userRepository.create(user);
