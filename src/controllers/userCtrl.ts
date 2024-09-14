@@ -24,24 +24,21 @@ export class UserCtrl {
 
   async createUser(req: Request):Promise<User> {
     console.log("[POST] /user controller", req.body);
-    const { name, email, phone } = req.body;
+    const { name, email, phone, password, username } = req.body;
     const userTypes: UserType[] = [UserType.USER];
-    if (!name || !email || !phone) {
+    if (!name || !email || !phone || !password || !username) {
         throw new RequestDataValidation("Data is missing");
       }
     if(req.body.type !== undefined) {
      const newTypes = req.body.type.split("|").map((type: string) => User.getUserType(type));
       userTypes.push(...newTypes);
     }
-    const username = req.body.username;
-    console.log("UserCtrl.createUser", name, email, phone, userTypes, username, req.body.password);
-
-    const password = await this.hashPassword(req.body.password);
-    console.log("JWT", username, password, jwtSecret);
+    const passwordHashed = await this.hashPassword(password);
     const token = jwt.sign({ username, password },jwtSecret as string, {expiresIn: "24h" });
     
-    const user = new User(name, email, phone, userTypes, new Date(), new Date(), username, password, token);
-    return  await this.userRepository.create(user);
+    const user = new User(name, email, phone, userTypes, new Date(), new Date(), username, passwordHashed, token);
+    return await this.userRepository.create(user);
+   
   }
 
   async hashPassword(plainPassword: string): Promise<string> {

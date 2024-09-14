@@ -1,6 +1,7 @@
 import { Knex } from 'knex';
 import { User } from '../entities/user';
 import { CRUDInterface } from './crudInterface';
+import { RequestDataValidation } from '../errors/exceptions';
 
 export class UserRepository implements CRUDInterface{
     private knex: Knex;
@@ -19,6 +20,9 @@ export class UserRepository implements CRUDInterface{
   }
     async create(user: User): Promise<User> {
       console.log("UserRepository.create", user);
+      if(await this.checkUserExists(user.email, user.username)){
+        throw new RequestDataValidation("Please, try again. User already exists");
+      }
       const userCreated = await this.knex('users').insert({
         name: user.name,
         email: user.email,
@@ -31,6 +35,10 @@ export class UserRepository implements CRUDInterface{
         updatedAt: user.updatedAt,
       }).select('*');
         return userCreated[0];
+    }
+    async checkUserExists(email: string, username:string): Promise<boolean> {
+        const user:User = await this.knex('users').where({ email, username }).first();
+        return !!user;
     }
     async update(id: string, user: User): Promise<User> {
         const userCreated= await this.knex('users').where({ id: id }).update(user).select('*');
