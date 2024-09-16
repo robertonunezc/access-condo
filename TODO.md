@@ -4,7 +4,7 @@
 
 [] Upload INE when checking (**DONE**)
 
-[] Enpdoints Authentication
+[] Enpdoints Authentication (**DONE**)
 
 [] App users Login -Google/Facebook
 
