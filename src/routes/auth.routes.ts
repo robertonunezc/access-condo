@@ -1,7 +1,15 @@
 import { Response, Router , Request} from 'express';
 import { AuthCtrl } from '../controllers/auth.ctrl'; // Adjust the path as necessary
+import knex from 'knex';
+import knexConfig from "../../db/knex";
+
 const router = Router();
-const authController = new AuthCtrl();
+
+const db = knex(knexConfig);
+
+const authController = new AuthCtrl(
+    db,
+);
 
 router.post('/login', (req:Request, res: Response) => {
     try {
@@ -14,3 +22,5 @@ router.post('/login', (req:Request, res: Response) => {
         return res.status(500).json({ message: "Internal server error" });
     }
 });
+
+export default router;

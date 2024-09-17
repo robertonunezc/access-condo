@@ -26,7 +26,8 @@ const upload = multer({
 const db = knex(knexConfig);
 const dotEnv = dotenv.config({
     path: path.resolve(__dirname, '../.env'),
-  });
+});
+
 const bucket = dotEnv.parsed?.AWS_BUCKET_NAME?? "condo-app-uploads";
 
 const s3Client = new S3Client({
