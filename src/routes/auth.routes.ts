@@ -11,11 +11,24 @@ const authController = new AuthCtrl(
     db,
 );
 
-router.post('/login', (req:Request, res: Response) => {
+router.post('/login',async (req:Request, res: Response) => {
     try {
-        const response = authController.login(req);
+        const response = await authController.login(req);
         return res.json(response);
     }catch (error) {
+        if (error instanceof Error) {
+            return res.status(400).json({ message: error.message });
+        }
+        return res.status(500).json({ message: "Internal server error" });
+    }
+});
+
+router.post('/verify-otc', async(req:Request, res: Response) => {
+    try {
+        const response = await authController.verifyOtc(req);
+        return res.json(response);
+    }catch (error) {
+        console.log("aaaa",error);
         if (error instanceof Error) {
             return res.status(400).json({ message: error.message });
         }

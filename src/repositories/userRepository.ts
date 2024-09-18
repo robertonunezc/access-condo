@@ -46,8 +46,8 @@ export class UserRepository implements CRUDInterface{
         if (!user) return null;
         return user;
     }
-    async update(id: string, user: User): Promise<User> {
-        const userCreated= await this.knex('users').where({ id: id }).update(user).select('*');
-        return userCreated[0];
+    async update(id: string, user: Partial<User>): Promise<User> {
+        await this.knex('users').where({ id: id }).update(user).select('*');
+        return user as User;
     }
 }

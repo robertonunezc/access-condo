@@ -14,6 +14,7 @@ export class EmailService {
         this.mailgun = mg.client({
             username: 'api',
             key: dotEnv.parsed?.MAILGUN_API_KEY?? "fake",
+           
         });
     }
 

@@ -16,6 +16,7 @@ interface UserInterface extends Entity {
     username:string;
     password:string;
     token:string;
+    otc?:string;
     createdAt: Date;
 }
 
@@ -30,6 +31,7 @@ export class User implements UserInterface {
         public username: string,
         public password: string,
         public token: string,
+        public otc?: string,
         public id?: string,
       
     ) {}
