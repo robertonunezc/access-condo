@@ -15,7 +15,7 @@ export class AuthCtrl {
   }
   
 
-  async login(req: Request):Promise<AuthResponse> {
+  async login(req: Request) {
     console.log("[POST] /login controller", req.body);
     const { email } = req.body;
     if (!email) {
@@ -29,6 +29,5 @@ export class AuthCtrl {
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const emailText = `Your one time code is ${code}`;
     await this.emailServices.sendEmail(user.email, "CondoApp code", emailText);
-    return { token: "token" };
     }   
 }

@@ -14,7 +14,7 @@ const authController = new AuthCtrl(
 router.post('/login', (req:Request, res: Response) => {
     try {
         const response = authController.login(req);
-        res.json(response);
+        return res.json(response);
     }catch (error) {
         if (error instanceof Error) {
             return res.status(400).json({ message: error.message });

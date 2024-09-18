@@ -1,34 +1,32 @@
-import Mailgun from 'mailgun-js';
+import Mailgun from 'mailgun.js';
 import dotenv from 'dotenv';
 import path from 'path';
-
+import formData from 'form-data';
+import { IMailgunClient } from 'mailgun.js/Interfaces';
 const dotEnv = dotenv.config({
     path: path.resolve(__dirname, '../../.env'),
 });
+
 export class EmailService {
-    private mailgun: Mailgun.Mailgun;
+    private mailgun: IMailgunClient;
     constructor() {
-        this.mailgun = new Mailgun({
-            apiKey: dotEnv.parsed?.EMAIL_KEY ?? "fake",
-            domain: dotEnv.parsed?.EMAIL_DOMAIN ?? "fake"
+        const mg = new Mailgun(formData);
+        this.mailgun = mg.client({
+            username: 'api',
+            key: dotEnv.parsed?.MAILGUN_API_KEY?? "fake",
         });
     }
+
     async sendEmail(to: string, subject: string, text: string) {
         console.log("Sending email to", to);
         const data = {
             from: 'Condo App <soporte@puntoreica.com>',
-            to: to,
+            to:[to],
             subject: subject,
-            text: text
+            text: text,
+            html: text,
         };
+            await this.mailgun.messages.create(dotEnv.parsed!.MAILGUN_DOMAIN, data);
 
-        await this.mailgun.messages().send(data, (error, body) => {
-            if (error) {
-                console.error(error);
-                throw new Error("Error sending email");
-            }
-            console.log(body);
-        });
-        
     };
 }
