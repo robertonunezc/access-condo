@@ -28,7 +28,6 @@ router.post('/verify-otc', async(req:Request, res: Response) => {
         const response = await authController.verifyOtc(req);
         return res.json(response);
     }catch (error) {
-        console.log("aaaa",error);
         if (error instanceof Error) {
             return res.status(400).json({ message: error.message });
         }
