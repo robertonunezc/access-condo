@@ -3,6 +3,7 @@ import{ Request } from "express";
 import { Knex } from "knex";
 import { EmailService } from "../infra/email";
 import { UserService } from "../services/user/user.services";
+import { User } from "../entities/user";
 export interface AuthResponse{
     token: string;
 }
@@ -31,7 +32,7 @@ export class AuthCtrl {
     await this.emailServices.sendEmail(user.email, "CondoApp code", emailText);
     await this.userService.setUserOTC(user.email, code);
   }
-  async verifyOtc(req: Request) {
+  async verifyOtc(req: Request): Promise<User|null> {
     console.log("[POST] /verifyOtc controller", req.body);
     const { email, otc } = req.body;
     if (!email || !otc) {
@@ -45,6 +46,6 @@ export class AuthCtrl {
         throw new Error("Invalid OTC");
     }
     // Invalidate OTC
-    await this.userService.setUserOTC(user.email, "");
+    return await this.userService.setUserOTC(user.email, "");
   }   
 }
