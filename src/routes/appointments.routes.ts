@@ -44,13 +44,13 @@ const router = Router();
 const appointmentCtrl = new AppointmentCtrl(db, uploadFileService);
 
 
-router.get('/appointment', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     const appointments = await appointmentCtrl.getAllAppointments();
     res.json(appointments);
 }
 );
 
-router.get('/appointment/:appointmentId/check-status', async (req: Request, res: Response) => {
+router.get('/:appointmentId/check-status', async (req: Request, res: Response) => {
     try {
         const appointment = await appointmentCtrl.checkOrSetAppointmentStatus(req.params.appointmentId);
         return res.json(appointment);

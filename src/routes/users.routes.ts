@@ -8,7 +8,7 @@ import { logger } from "../infra/logger";
 const db = knex(knexConfig);
 const router = Router();
 const userController = new UserCtrl(db);
-router.get('/user', async (req: Request, res: Response) => {
+router.get('/', async (req: Request, res: Response) => {
     try {
         const users = await userController.getAllUsers();
         res.json(users);
@@ -20,7 +20,7 @@ router.get('/user', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/user', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
     logger.log("[POST] /user", req.body);
     try {
         const userCreated = await userController.createUser(req);

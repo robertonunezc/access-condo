@@ -15,8 +15,8 @@ const houseCtrl = new HouseCtrl(db);
 
 app.use(express.json());
 
-app.use('/api',appointmetRoutes);
-app.use('/api',userRoutes);
+app.use('/api/appointment',appointmetRoutes);
+app.use('/api/user',userRoutes);
 app.use('/api',authRoutes);
 
 
