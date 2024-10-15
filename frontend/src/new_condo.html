@@ -1,0 +1,39 @@
+---
+layout: base.njk
+title: Create New Condo
+---
+    <div class="container mt-5">
+        <h2>Create New Condo</h2>
+        <form class="form" id="newCondoForm" action="">
+            <div class="form-group">
+                <label for="condoName">Condo Name</label>
+                <input type="text" class="form-control" id="condoName" placeholder="Enter condo name">
+            </div>
+            <div class="form-group">
+                <label for="address">Address</label>
+                <input type="text" class="form-control" id="address" placeholder="Enter address">
+            </div>
+            <div class="form-group">
+                <label for="city">City</label>
+                <input type="text" class="form-control" id="city" placeholder="Enter city">
+            </div>
+            <div class="form-group">
+                <label for="state">State</label>
+                <input type="text" class="form-control" id="state" placeholder="Enter state">
+            </div>
+            <div class="form-group">
+                <label for="zipCode">Zip Code</label>
+                <input type="text" class="form-control" id="zipCode" placeholder="Enter zip code">
+            </div>
+            <div class="form-group">
+                <label  for="admin">Admin</label>
+                <select class="form-control" id="admin">
+                    <option value="1">Admin 1</option>
+                    <option value="2">Admin 2</option>
+                    <option value="3">Admin 3</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <script src="/assets/js/new_condo.js"></script>

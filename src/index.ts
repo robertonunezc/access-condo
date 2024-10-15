@@ -1,5 +1,6 @@
 import express, { Express, Request, Response } from "express";
 import knex from "knex";
+import cors from "cors";
 import knexConfig from "../db/knex";
 import {CondoCtrl, HouseCtrl, } from "./controllers";
 import { logger } from "./infra/logger";
@@ -8,7 +9,11 @@ import userRoutes from "./routes/users.routes";
 import authRoutes from "./routes/auth.routes";
 const app: Express = express();
 const port = process.env.PORT || 3000;
-
+const corsOptions = {
+    origin: "*",
+    optionsSuccessStatus: 200
+};
+app.use(cors(corsOptions));
 const db = knex(knexConfig);
 const condoCtrl = new CondoCtrl(db);
 const houseCtrl = new HouseCtrl(db);
