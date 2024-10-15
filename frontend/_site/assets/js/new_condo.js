@@ -1,4 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
     const form = document.getElementById('newCondoForm');
 
     form.addEventListener('submit', function(event) {
@@ -6,10 +5,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const formData = new FormData(form);
         const data = {};
-
         formData.forEach((value, key) => {
             data[key] = value;
         });
+        console.log(formData)
+        console.log(data);
 
         fetch('http://localhost:3000/condo', {
             method: 'POST',
@@ -21,9 +21,10 @@ document.addEventListener('DOMContentLoaded', function() {
         .then(response => response.json())
         .then(data => {
             console.log('Success:', data);
+            window.location.href = '/condos/';
         })
         .catch((error) => {
             console.error('Error:', error);
+            alert('There was an error creating the condo');
         });
     });
-});
