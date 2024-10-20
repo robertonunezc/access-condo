@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the application code to the working directory
 COPY . .
 
+# Make sure to copy the .env file into the container
+COPY .env .env
+
 RUN rm -rf dist
 
 RUN npm run build
