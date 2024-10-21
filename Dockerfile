@@ -18,7 +18,7 @@ RUN rm -rf dist
 RUN npm run build
 
 # Make sure to copy the .env file into the container
-COPY .env .dist/.env
+COPY .env ./dist/.env
 
 # Expose the port that the app will listen on
 EXPOSE 3000
