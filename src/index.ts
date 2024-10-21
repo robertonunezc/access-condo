@@ -69,6 +69,10 @@ app.post('/house', async (req: Request, res: Response) => {
     }
 });
 
+app.get('healthcheck', (req: Request, res: Response) => {
+    res.send('Server is running');
+});
+
 
 app.listen(port, () => {
     logger.log('Server is running on port', port);
