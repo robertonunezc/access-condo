@@ -16,7 +16,7 @@ services:
     depends_on:
       - db
     entrypoint: >
-      sh -c "npm run start"
+      sh -c "npm run dev"
     networks:
       - mynetwork
   db:
