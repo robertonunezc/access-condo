@@ -45,7 +45,7 @@ export class HouseRepository implements CRUDInterface {
         return await this.db('appointments').where({ house_id: id }).orderBy('createdAt', 'desc').limit(5);
     }
 
-    async findByUserId(id: string): Promise<House[]> {
-        return await this.db('houses').where({ owner_id: id });
+    async findByUserId(userId: string): Promise<House[]> {
+        return await this.db('houses').join('users','owner_id', 'users.id').where({ owner_id: userId }).select('*');
     }
 }

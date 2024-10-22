@@ -9,8 +9,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 row.innerHTML = `
                     <td>${house.id}</td>
                     <td>${house.address}</td>
-                    <td>${house.owner.name}</td>
-                    <td>${house.condo}</td>
+                    <td>${house.name}</td>
                 `;
                 tableBody.appendChild(row);
             });
