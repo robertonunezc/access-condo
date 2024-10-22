@@ -55,4 +55,7 @@ export class HouseCtrl {
     async getHouseAppointments(id: string): Promise<Appointment[]> {
         return await this.houseRepository.getLastAppointments(id);
     }
+    async getHousesByUserId(id: string): Promise<House[]> {
+        return await this.houseRepository.findByUserId(id);
+    }
 }

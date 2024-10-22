@@ -80,8 +80,9 @@
                 }
             }).then(data => {
                 console.log(data);
-                // save user token to local storage
+                // research if there is another way to store this info
                 localStorage.setItem('token', data.token);
+                localStorage.setItem('userId', data.userId);
                 window.location.href = '/houses/index.html';
 
             })

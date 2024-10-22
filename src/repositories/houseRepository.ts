@@ -44,4 +44,8 @@ export class HouseRepository implements CRUDInterface {
     async getLastAppointments(id: string): Promise<Appointment[]> {
         return await this.db('appointments').where({ house_id: id }).orderBy('createdAt', 'desc').limit(5);
     }
+
+    async findByUserId(id: string): Promise<House[]> {
+        return await this.db('houses').where({ owner_id: id });
+    }
 }
