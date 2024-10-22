@@ -18,6 +18,7 @@ interface UserInterface extends Entity {
     token:string;
     otc?:string;
     createdAt: Date;
+    housesIds?: string[];
 }
 
 export class User implements UserInterface {
@@ -33,6 +34,7 @@ export class User implements UserInterface {
         public token: string,
         public otc?: string,
         public id?: string,
+        public housesIds?: string[],
       
     ) {}
     static getUserType(type: string): UserType {

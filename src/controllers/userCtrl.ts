@@ -19,6 +19,7 @@ export class UserCtrl {
   }
 
   async getAllUsers():Promise<User[]> {
+    console.log("[GET] /user controller");
     return await this.userRepository.findAll();
   }
 
