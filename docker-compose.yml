@@ -35,7 +35,14 @@ services:
       - mynetwork
     ports:
       - "5433:5432"
-
+  pgadmin:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      PGADMIN_DEFAULT_EMAIL: postgres@database.com
+      PGADMIN_DEFAULT_PASSWORD: password
+    ports:
+      - '5051:80'
 networks:
   mynetwork:
 
