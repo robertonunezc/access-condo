@@ -11,8 +11,8 @@ services:
     ports:
       - '3000:3000'
     environment:
-      - DATABASE_HOST=db
-      - DATABASE_PORT=3306
+      - DATABASE_HOST=${DATABASE_HOST}
+      - DATABASE_PORT=${DATABASE_PORT}
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_NAME=${DATABASE_NAME}
@@ -23,22 +23,21 @@ services:
     networks:
       - mynetwork
   db:
-    image: mariadb
+    image: postgres:16
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=${DATABASE_ROOT_PASSWORD}
-      - MYSQL_DATABASE=${DATABASA_NAME}
-      - MYSQL_USER=${DATABASE_USER}
-      - MYSQL_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USER}
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_DB=${DATABASE_NAME}
     volumes:
-      - mariadb_data:/var/lib/mysql
+      - db_data:/var/lib/postgresql/data
     networks:
       - mynetwork
     ports:
-      - "3306:3306"
+      - "5433:5432"
 
 networks:
   mynetwork:
 
 volumes:
-  mariadb_data:
+  db_data:

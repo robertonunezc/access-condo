@@ -51,7 +51,7 @@ export class UserRepository implements CRUDInterface {
     const user = await this.knex("users").where({ email }).first();
     if (!user) return null;
     const userHouses = await this.knex("houses")
-      .where({ userId: user.id })
+      .where({ owner_id: user.id })
       .select("id");
     user.houses = userHouses.map((house) => house.id);
     return user;

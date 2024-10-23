@@ -5,10 +5,10 @@ const dotEnv = dotenv.config({
   path: path.resolve(__dirname, '../.env'),
 });
 const knexConfig: Knex.Config = {
-    client: 'mysql',
+    client: 'pg',
     connection: {
       host: dotEnv.parsed?.DATABASE_HOST || 'db',
-      port: parseInt(dotEnv.parsed?.DATABASE_PORT as string) || 3306,
+      port: parseInt(dotEnv.parsed?.DATABASE_PORT as string) || 5432,
       user: dotEnv.parsed?.DATABASE_USER || 'condo',
       password: dotEnv.parsed?.DATABASE_PASSWORD || 'condo123.',
       database: dotEnv.parsed?.DATABASE_NAME || 'condo',
