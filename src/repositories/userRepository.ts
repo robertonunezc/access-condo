@@ -34,12 +34,9 @@ export class UserRepository implements CRUDInterface {
         token: user.token,
         createdAt: user.createdAt,
         updatedAt: user.updatedAt,
-      })
-      .select("*");
-    const userCreated = await this.knex<User>("users")
-      .where({ id: userCreatedId[0] })
-      .select("*");
-    return userCreated[0];
+      }).returning("id");
+    user.id = userCreatedId[0].id;
+    return user;
   }
   async checkUserExists(email: string, username: string): Promise<boolean> {
     const user: User = await this.knex("users")
@@ -47,9 +44,11 @@ export class UserRepository implements CRUDInterface {
       .first();
     return !!user;
   }
-  async getUserByEmail(email: string): Promise<User | null> {
+  async getUserByEmail(email: string): Promise<User> {
     const user = await this.knex("users").where({ email }).first();
-    if (!user) return null;
+    if (!user) {
+      throw new RequestDataValidation("User not found");
+    };
     const userHouses = await this.knex("houses")
       .where({ owner_id: user.id })
       .select("id");
