@@ -21,10 +21,10 @@ const condoCtrl = new CondoCtrl(db);
 
 app.use(express.json());
 
-app.use('/api/appointment',appointmetRoutes);
 app.use('/api/user',userRoutes);
 app.use('/api',authRoutes);
 app.use('/api/house',housesRoutes);
+app.use('/api/appointment',appointmetRoutes);
 
 
 app.get('/condo', async (req: Request, res: Response) => {

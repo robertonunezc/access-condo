@@ -9,18 +9,18 @@ export class AppointmentRepository implements CRUDInterface {
         this.db = db;
     }
 
-    async create(data: Appointment): Promise<Appointment> {
-      const appointment:Appointment[] =  await this.db('appointments').insert({
-        personName: data.personName,
-        house_id: data.house.id,
-        carPlate: data.carPlate,
-        scheduledDate: data.scheduledDateTime,
-        status: data.status,
+    async create(appointment: Appointment): Promise<Appointment> {
+      const appointmentCreated =  await this.db('appointments').insert({
+        personName: appointment.personName,
+        house_id: appointment.house.id,
+        carPlate: appointment.carPlate,
+        scheduledDate: appointment.scheduledDateTime,
+        status: appointment.status,
         createdAt: new Date(),
         updatedAt: new Date()
-    });
-    
-        return await this.findById(appointment[0].toString());
+    }).returning("id");
+    appointment.id = appointmentCreated[0].id;
+        return  appointment;
     }
 
     async update(appointmentId:string, data: Partial<Appointment>): Promise<Appointment> {
