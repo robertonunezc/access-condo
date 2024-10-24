@@ -22,12 +22,12 @@ export class CondoCtrl {
 
     async createCondo(req: Request): Promise<Condo> {
         console.log("Post request", req.body)
-        const { name, address, manager } = req.body;
+        const { name, address, manager_id } = req.body;
         if (!name || !address) {
             throw new RequestDataValidation("Data is missing");
         }
 
-        const existManager = await this.userRepository.findById(manager);
+        const existManager = await this.userRepository.findById(manager_id);
         if (!existManager) {
             throw new RequestDataValidation("Manager not found");
         }

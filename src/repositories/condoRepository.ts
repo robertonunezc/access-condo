@@ -22,13 +22,14 @@ export class CondoRepository implements CRUDInterface{
     return condos;
   }
     async create(condo: Condo): Promise<Condo> {
-        const [id] = await this.knex('condos').insert({
+        const createdCondoId = await this.knex('condos').insert({
           name: condo.name,
           address: condo.address,
           manager_id: condo.manager.id,
           createdAt: new Date(),
           updatedAt: new Date(),
-        });
+        }).returning('id');
+        condo.id = createdCondoId[0].id;
         return {
           ...condo,
         };

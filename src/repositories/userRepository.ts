@@ -11,6 +11,7 @@ export class UserRepository implements CRUDInterface {
   }
 
   async findById(id: string): Promise<User | null> {
+    console.log("UserRepository.findById", id);
     const user = await this.knex("users").where({ id }).first();
     if (!user) return null;
     return user;
