@@ -64,7 +64,7 @@ router.get('/:appointmentId/check-status', async (req: Request, res: Response) =
 }
 );
 
-router.get('/appointment/house/:houseId', async (req: Request, res: Response) => {
+router.get('/house/:houseId', async (req: Request, res: Response) => {
     if (req.query.date) {
         const date = new Date(req.query.date.toString());
 
@@ -77,7 +77,7 @@ router.get('/appointment/house/:houseId', async (req: Request, res: Response) =>
 }
 );
 
-router.get('/appointment/date/:date', async (req: Request, res: Response) => {
+router.get('/date/:date', async (req: Request, res: Response) => {
     const date = new Date(req.params.date);
     const appointments = await appointmentCtrl.getByDate(date);
     res.json(appointments);
@@ -87,7 +87,7 @@ router.get('/appointment/date/:date', async (req: Request, res: Response) => {
     this endpoint is for the sharable link in case the user wants to share the appointment
     completion with the visitor.
 */
-router.post('/appointment/dummy', async (req: Request, res: Response) => {
+router.post('/dummy', async (req: Request, res: Response) => {
     console.log("[POST] /appointment/dummy", req.body);
     try {
         const appointmentCreated = await appointmentCtrl.createDummyAppointment(req);
@@ -100,7 +100,7 @@ router.post('/appointment/dummy', async (req: Request, res: Response) => {
     }
 });
 
-router.post('/appointment', async (req: Request, res: Response) => {
+router.post('/', async (req: Request, res: Response) => {
     logger.log("[POST] /appointment", req.body);
     try {
         const appointmentCreated = await appointmentCtrl.createAppointment(req);
@@ -114,7 +114,7 @@ router.post('/appointment', async (req: Request, res: Response) => {
 });
 
 
-router.patch('/appointment/:appointmentId',upload.single('file'), async (req: Request, res: Response) => {
+router.patch('/:appointmentId',upload.single('file'), async (req: Request, res: Response) => {
     logger.log("[PATCH] /appointment/:appointmentId", req.body, req.file);
     try {
         const appointmentUpdated = await appointmentCtrl.update(req.params.appointmentId, req);
