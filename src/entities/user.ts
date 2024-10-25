@@ -52,6 +52,7 @@ export class User implements UserInterface {
         }
     }
     static convertUsersTypeToString(userTypes: UserType[]): string {
+        console.log("User.convertUsersTypeToString", typeof userTypes);
         return userTypes.join("|");
     }
 }
