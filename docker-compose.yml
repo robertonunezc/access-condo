@@ -19,6 +19,7 @@ services:
       - db
     entrypoint: >
       sh -c "npm run dev"
+    restart: always
     networks:
       - mynetwork
 

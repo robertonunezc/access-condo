@@ -14,7 +14,6 @@ export class UserService {
         const user = await this.userRepository.getUserByEmail(email);
         if(!user) return null;
         user.otc = otc;
-        console.log("UserService.setUserOTC", user);
         return this.userRepository.update(user.id!,user);
     }
 }
