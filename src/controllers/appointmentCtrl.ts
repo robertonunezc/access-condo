@@ -65,7 +65,7 @@ export class AppointmentCtrl {
 
         };
         const createdAppointment = await this.appointmentRepository.create(appointment);
-        console.log("Created Appointment", createdAppointment);
+        console.log("Created Appointment", createdAppointment.id);
         const updatedAppointment = await this.appointmentRepository.update(createdAppointment.id!,{
             shareLink: `${dotenv.config().parsed?.WEB_HOST}/appointment/${createdAppointment.id}`
         });
