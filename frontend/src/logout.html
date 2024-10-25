@@ -1,0 +1,16 @@
+---
+layout: base.njk
+title: SAlir
+---
+
+<div class="container mt-5">
+    <div class="alert alert-info">
+        <p>Gracias por usar nuestra aplicacion</p>
+        <p>Esperamos que vuelva pronto</p>
+    </div>
+</div>
+<script>
+    localStorage.removeItem('token');
+    localStorage.removeItem('email');
+    window.location.href = '/login.html';
+</script>
