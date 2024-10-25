@@ -1,0 +1,58 @@
+---
+layout: "base.njk"
+---
+<div class="container mt-5">
+    <h2 class="mb-4">New Appointment</h2>
+    <form id="new-appointment-form">
+        <div class="form-group">
+            <label for="owner_name">Owner Name</label>
+            <input type="text" class="form-control" id="personName" name="personName">
+        </div>
+        <div class="form-group">
+            <label for="carPlate">Placas Carro</label>
+            <input type="text" class="form-control" id="carPlate" name="carPlate">
+        </div>
+        <div class="form-group
+        ">
+            <label for="date">Date</label>
+            <input type="date" class="form-control" id="date" name="date">
+        </div>
+        <div class="form-group">
+            <label for="time">Time</label>
+            <input type="time" class="form-control" id="time" name="time">
+        </div>
+        <button type="submit" class="btn btn-primary">Create</button>
+    </form>
+</div>
+<script>
+    document.getElementById('new-appointment-form').addEventListener('submit', async function (event) {
+        event.preventDefault();
+        const personName = document.getElementById('personName').value;
+        const carPlate = document.getElementById('carPlate').value;
+        const date = document.getElementById('date').value;
+        const time = document.getElementById('time').value;
+        const scheduledDateTime = date + 'T' + time;
+         //get house id from query string
+         const houseId = new URLSearchParams(window.location.search).get('houseId');
+        const response = await fetch('http://localhost:3000/api/appointment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                personName,
+                carPlate,
+                scheduledDateTime,
+                status:'CREATED',
+                houseId,
+            })
+        });
+        if (response.ok) {
+            alert('Appointment created');
+            window.location.href = '/appointments';
+        } else {
+            alert('Error creating appointment');
+        }
+    });
+
+</script>

@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>${house.address}</td>
                     <td>${house.name}</td>
                     <td>
-                    <a href="house.html?id=${house.id}" class="btn btn-primary">Agendar Cita</a>
+                    <a href="/new_appointment?id=${house.id}" class="btn btn-primary">Agendar Cita</a>
                     <button class="btn-generate-appointment btn btn-success" data-house="${house.id}"  data-toggle="modal" data-target="#exampleModal">Visitante Generar Cita</button>
                     </td>
                 `;
