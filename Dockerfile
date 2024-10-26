@@ -1,4 +1,4 @@
-# Use the official Node.js 14 image as the base image
+# Use the official Node.js 20 image as the base image
 FROM node:20
 
 # Set the working directory inside the container
@@ -19,6 +19,12 @@ RUN npm run build
 
 # Make sure to copy the .env file into the container
 COPY .env ./dist/.env
+
+# Install tzdata for timezone support
+RUN apt-get update && apt-get install -y tzdata
+
+# Set the timezone
+ENV TZ=America/Mexico_City
 
 # Expose the port that the app will listen on
 EXPOSE 3000

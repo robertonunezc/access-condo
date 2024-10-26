@@ -7,6 +7,7 @@ services:
     volumes:
       - ./src:/app/src
       - /node_modules
+      - /etc/localtime:/etc/localtime:ro
     ports:
       - '3000:3000'
     environment:
@@ -15,6 +16,7 @@ services:
       - DATABASE_USER=${DATABASE_USER}
       - DATABASE_PASSWORD=${DATABASE_PASSWORD}
       - DATABASE_NAME=${DATABASE_NAME}
+      - TZ='America/Mexico_City'
     depends_on:
       - db
     entrypoint: >

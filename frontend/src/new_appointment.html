@@ -25,6 +25,7 @@ layout: "base.njk"
     </form>
 </div>
 <script>
+
     document.getElementById('new-appointment-form').addEventListener('submit', async function (event) {
         event.preventDefault();
         const personName = document.getElementById('personName').value;
@@ -33,7 +34,7 @@ layout: "base.njk"
         const time = document.getElementById('time').value;
         const scheduledDateTime = date + 'T' + time;
          //get house id from query string
-         const houseId = new URLSearchParams(window.location.search).get('houseId');
+         const houseId = new URLSearchParams(window.location.search).get('house_id');
         const response = await fetch('http://localhost:3000/api/appointment', {
             method: 'POST',
             headers: {
