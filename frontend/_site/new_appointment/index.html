@@ -91,7 +91,7 @@
         });
         if (response.ok) {
             alert('Appointment created');
-            window.location.href = '/appointments';
+            window.location.href = '/house_appointments/index.html?house_id=' + houseId;
         } else {
             alert('Error creating appointment');
         }
