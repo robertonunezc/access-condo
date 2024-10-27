@@ -1,0 +1,53 @@
+---
+layout: "base.njk"
+---
+<div class="container mt-5">
+    <h2 class="mb-4">Appointment Details</h2>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title
+            ">Appointment ID: <span id="appointment-id"></span></h5>
+            <p class="card-text">Client Name: <span id="client-name"></span></p>
+            <p class="card-text">Car Plate: <span id="car-plate"></span></p>
+            <p class="card-text">Scheduled Date: <span id="scheduled-date"></span></p>
+            <p class="card-text">Status: <span id="status"></span></p>
+            <button class="btn btn-primary">Confirm</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // generate the script to get the appointment from the api
+    document.addEventListener('DOMContentLoaded', function() {
+        // Function to get query parameters
+        function getQueryParams() {
+            const params = {};
+            window.location.search.substring(1).split("&").forEach(function(pair) {
+                const [key, value] = pair.split("=");
+                params[decodeURIComponent(key)] = decodeURIComponent(value);
+            });
+            return params;
+        }
+
+        // Extract appointment_id from URL query parameters
+        const queryParams = getQueryParams();
+        const appointmentId = queryParams['appointment_id'];
+
+        if (appointmentId) {
+            // Fetch appointment data based on appointment_id
+            fetch(`http://localhost:3000/api/appointment/${appointmentId}/check-status`)
+                .then(response => response.json())
+                .then(appointment => {
+                    document.querySelector('#appointment-id').textContent = appointment.id;
+                    document.querySelector('#client-name').textContent = appointment.personName;
+                    document.querySelector('#car-plate').textContent = appointment.carPlate;
+                    document.querySelector('#scheduled-date').textContent = appointment.scheduledDate;
+                    document.querySelector('#status').textContent = appointment.status;
+                })
+                .catch(error => console.error('Error fetching appointment:', error));
+        } else {
+            console.error('appointment_id not found in URL query parameters');
+        }
+    });
+
+</script>

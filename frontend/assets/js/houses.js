@@ -13,6 +13,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <td>
                     <a href="/new_appointment/index.html?house_id=${house.id}" class="btn btn-primary">Agendar Cita</a>
                     <button class="btn-generate-appointment btn btn-success" data-house="${house.id}"  data-toggle="modal" data-target="#exampleModal">Visitante Generar Cita</button>
+                    <a href="/house_appointments/index.html?house_id=${house.id}" class="btn btn-info">Ver Citas</a>
                     </td>
                 `;
         tableBody.appendChild(row);

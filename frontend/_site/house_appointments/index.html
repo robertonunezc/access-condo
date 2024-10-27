@@ -30,7 +30,7 @@
                             <a class="nav-link" href="#">Usuarios</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Citas</a>
+                            <a class="nav-link" href="/appointments">Citas</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="#">Confirmar Cita</a>
@@ -52,6 +52,7 @@
                 <th>Appointment ID</th>
                 <th>Client Name</th>
                 <th>Date</th>
+                <th>Actions</th>
             </tr>
         </thead>
         <tbody>
@@ -87,6 +88,8 @@
                                 <td>${appointment.id}</td>
                                 <td>${appointment.personName}</td>
                                 <td>${appointment.scheduledDate}</td>
+                                <td>
+                                    <a href="/appointment_details/index.html?appointment_id=${appointment.id}" class="btn btn-primary">View</a>
                             `;
                             tableBody.appendChild(row);
                         });
