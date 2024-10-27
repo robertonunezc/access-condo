@@ -44,7 +44,7 @@ export class AppointmentCtrl {
       personName,
       house,
       carPlate,
-      scheduledDateTime,
+      scheduledDateTime:scheduledDateTimeFormated.toJSDate(),
       status: AppointmentStatus.CREATED, // default status
       createdAt: new Date(),
       updatedAt: new Date(),
