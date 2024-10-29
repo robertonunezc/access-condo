@@ -6,7 +6,7 @@
 
 [] Enpdoints Authentication (**DONE**)
 
-[] Generate the sharable ID. This link must expire in 24 hours #DONE
+[] Generate the sharable ID. This link must expire in 24 hours (**DONE**)
 
 [] Query data only for the logged user
 

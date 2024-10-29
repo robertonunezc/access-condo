@@ -46,6 +46,6 @@ export class HouseRepository implements CRUDInterface {
     }
 
     async findByUserId(userId: string): Promise<House[]> {
-        return await this.db('houses').join('users','owner_id', 'users.id').where({ owner_id: userId }).select('*');
+        return await this.db('houses').where({ owner_id: userId }).select('*');
     }
 }
