@@ -89,6 +89,9 @@
                                 <td>${appointment.personName}</td>
                                 <td>${appointment.scheduledDate}</td>
                                 <td>
+                                    ${appointment.status}
+                                </td>
+                                <td>
                                     <a href="/appointment_details/index.html?appointment_id=${appointment.id}" class="btn btn-primary">View</a>
                             `;
                             tableBody.appendChild(row);

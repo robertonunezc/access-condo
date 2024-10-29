@@ -50,9 +50,15 @@ router.get('/', async (req: Request, res: Response) => {
 }
 );
 
-router.get('/:appointmentId/check-status', async (req: Request, res: Response) => {
+router.get('/:appointmentId', async (req: Request, res: Response) => {
+    const appointment = await appointmentCtrl.getAppointmentById(req.params.appointmentId);
+    res.json(appointment);
+}
+);
+
+router.get('/:appointmentId/confirm', async (req: Request, res: Response) => {
     try {
-        const appointment = await appointmentCtrl.checkOrSetAppointmentStatus(req.params.appointmentId);
+        const appointment = await appointmentCtrl.confirm(req.params.appointmentId);
         return res.json(appointment);
     } catch (error) {
         if (error instanceof Error) {

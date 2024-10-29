@@ -55,7 +55,7 @@
             <p class="card-text">Car Plate: <span id="car-plate"></span></p>
             <p class="card-text">Scheduled Date: <span id="scheduled-date"></span></p>
             <p class="card-text">Status: <span id="status"></span></p>
-            <button class="btn btn-primary">Confirm</button>
+            <button class="btn btn-primary" id="confirm-btn">Confirm</button>
         </div>
     </div>
 </div>
@@ -79,7 +79,7 @@
 
         if (appointmentId) {
             // Fetch appointment data based on appointment_id
-            fetch(`http://localhost:3000/api/appointment/${appointmentId}/check-status`)
+            fetch(`http://localhost:3000/api/appointment/${appointmentId}`)
                 .then(response => response.json())
                 .then(appointment => {
                     document.querySelector('#appointment-id').textContent = appointment.id;
@@ -93,7 +93,20 @@
             console.error('appointment_id not found in URL query parameters');
         }
     });
-
+    const confirmBtn = document.querySelector('#confirm-btn');
+    confirmBtn.addEventListener('click', function() {
+        const appointmentId = document.querySelector('#appointment-id').textContent;
+        fetch(`http://localhost:3000/api/appointment/${appointmentId}/confirm`, {
+            method: 'GET'
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Appointment confirmed');
+            console.log('Appointment confirmed:', data);
+            document.querySelector('#status').textContent = 'Confirmed';
+        })
+        .catch(error => console.error('Error confirming appointment:', error));
+    });
 </script>
             <!-- Main Footer -->
     </main>

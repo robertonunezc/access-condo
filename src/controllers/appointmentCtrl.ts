@@ -22,6 +22,11 @@ export class AppointmentCtrl {
     return await this.appointmentRepository.findAll();
   }
 
+  async getAppointmentById(appointmentId: string): Promise<Appointment> {
+    return await this.appointmentRepository.findById(appointmentId);
+  }
+
+
   async createAppointment(req: Request): Promise<Appointment> {
     const { personName, houseId, carPlate, scheduledDateTime } = req.body;
     if (!personName || !houseId || !carPlate || !scheduledDateTime) {
@@ -51,6 +56,7 @@ export class AppointmentCtrl {
     };
     return await this.appointmentRepository.create(appointment);
   }
+
   async createDummyAppointment(req: Request): Promise<Appointment> {
     const { houseId } = req.body;
     console.log("HouseId", houseId);
@@ -144,7 +150,8 @@ export class AppointmentCtrl {
     );
     return `${path}${fileName}.jpg`;
   }
-  async checkOrSetAppointmentStatus(
+
+  async confirm(
     appointmentId: string
   ): Promise<Appointment> {
     const appointment = await this.appointmentRepository.findById(
@@ -153,8 +160,7 @@ export class AppointmentCtrl {
     if (!appointment) {
       throw new RequestDataValidation("Appointment not found");
     }
-    const status = appointment.status;
-    if (status === AppointmentStatus.DONE) {
+    if (appointment.status === AppointmentStatus.DONE) {
       throw new RequestDataValidation("Appointment already checked");
     }
     await this.appointmentRepository.update(appointmentId, {
