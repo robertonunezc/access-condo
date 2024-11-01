@@ -5,7 +5,6 @@ import { Request } from "express";
 import { RequestDataValidation } from "../errors/exceptions";
 import { UploadFile } from "../services/uploadFiles/uploadFile.services";
 import { randomUUID } from "crypto";
-import dotenv from "dotenv";
 import { DateTime } from "luxon";
 
 export class AppointmentCtrl {
@@ -80,7 +79,7 @@ export class AppointmentCtrl {
     const updatedAppointment = await this.appointmentRepository.update(
       createdAppointment.id!,
       {
-        shareLink: `${dotenv.config().parsed?.WEB_HOST}/appointment/${
+        shareLink: `${process.env.WEB_HOST}/appointment/${
           createdAppointment.id
         }`,
       }

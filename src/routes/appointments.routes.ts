@@ -4,8 +4,6 @@ import { S3Client } from "@aws-sdk/client-s3";
 import { AppointmentCtrl } from "../controllers/appointmentCtrl";
 import knex from "knex";
 import knexConfig from "../../db/knex";
-import dotenv from 'dotenv';
-import path from 'path';
 import multer from "multer";
 import { logger } from "../infra/logger";
 // Configure Multer to store files in memory (you can also configure it to save to disk)
@@ -24,18 +22,16 @@ const upload = multer({
   
 
 const db = knex(knexConfig);
-const dotEnv = dotenv.config({
-    path: path.resolve(__dirname, '../.env'),
-});
 
-const bucket = dotEnv.parsed?.AWS_BUCKET_NAME?? "condo-app-uploads";
+
+const bucket = process.env.AWS_BUCKET_NAME?? "condo-app-uploads";
 
 const s3Client = new S3Client({
     credentials: {
-        accessKeyId: dotEnv.parsed?.AWS_ACCESS_KEY_ID ?? "fake",
-        secretAccessKey: dotEnv.parsed?.AWS_SECRET_ACCESS_KEY ?? "fake"
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "fake",
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "fake"
     },
-    region: dotEnv.parsed?.AWS_REGION ?? "us-east-1"});
+    region: process.env.AWS_REGION ?? "us-east-1"});
 
 
 const uploadFileService = new UploadFile(s3Client,bucket, "images");

@@ -1,11 +1,6 @@
 import Mailgun from 'mailgun.js';
-import dotenv from 'dotenv';
-import path from 'path';
 import formData from 'form-data';
 import { IMailgunClient } from 'mailgun.js/Interfaces';
-const dotEnv = dotenv.config({
-    path: path.resolve(__dirname, '../../.env'),
-});
 
 export class EmailService {
     private mailgun: IMailgunClient;
@@ -13,7 +8,7 @@ export class EmailService {
         const mg = new Mailgun(formData);
         this.mailgun = mg.client({
             username: 'api',
-            key: dotEnv.parsed?.MAILGUN_API_KEY?? "fake",
+            key: process.env.MAILGUN_API_KEY?? "fake",
         });
     }
 
@@ -26,7 +21,7 @@ export class EmailService {
             text: text,
             html: text,
         };
-            await this.mailgun.messages.create(dotEnv.parsed!.MAILGUN_DOMAIN, data);
+            await this.mailgun.messages.create(process.env.MAILGUN_DOMAIN!, data);
 
     };
 }

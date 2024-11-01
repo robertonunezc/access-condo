@@ -5,12 +5,8 @@ import { Request } from "express";
 import { RequestDataValidation } from "../errors/exceptions";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import dotenv from "dotenv";
-import path from "path";
-const dotEnv = dotenv.config({
-  path: path.resolve(__dirname, '../../.env'),
-});
-const jwtSecret = dotEnv.parsed?.JWT_SECRET;
+
+const jwtSecret = process.env.JWT_SECRET;
 
 export class UserCtrl {
   private userRepository: UserRepository;
