@@ -8,7 +8,7 @@ import appointmetRoutes from "./routes/appointments.routes";
 import userRoutes from "./routes/users.routes";
 import authRoutes from "./routes/auth.routes";
 import housesRoutes from "./routes/houses.routes";
-
+import { setupSwagger } from "./api-doc/swagger";
 const app: Express = express();
 const port = process.env.PORT || 3000;
 const corsOptions = {
@@ -51,7 +51,7 @@ app.get('/healthcheck', (req: Request, res: Response) => {
     res.send('Server is running');
 });
 
-
+setupSwagger(app);
 app.listen(port, () => {
     logger.log('Server is running on port', port);
 });

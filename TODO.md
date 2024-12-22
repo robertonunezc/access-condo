@@ -1,14 +1,17 @@
 # TODOS
 
-[] Implement CI/CD (**InProgress**)
+[x] Implement CI/CD (**InProgress**)
 
-[] Upload INE when checking (**DONE**)
+[x] Upload INE when checking (**DONE**)
 
-[] Enpdoints Authentication (**DONE**)
+[x] Enpdoints Authentication (**DONE**)
 
-[] Generate the sharable ID. This link must expire in 24 hours (**DONE**)
+[x] Generate the sharable ID. This link must expire in 24 hours (**DONE**)
 
-[] Query data only for the logged user
+[x] Query data only for the logged user
 
-[] Replace .dotEnv with proccess.env
- 
+[x] Replace .dotEnv with proccess.env
+
+[] Setup AWS ECS
+
+[] Add Redis to send email as a background task
