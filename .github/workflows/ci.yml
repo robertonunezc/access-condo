@@ -67,10 +67,18 @@ jobs:
           -e JWT_SECRET=\$JWT_SECRET \
           -p 80:80 \
           robe/development:condo-app
+        # Display running containers
+        docker ps -a
         # Wait for container to start
-        while ! docker exec condo-app npx knex migrate:latest --knexfile db/knex.ts; do
-          echo "Waiting for container to start..."  
+        retries=3
+        count=0
+        until docker exec condo-app npx knex migrate:latest --knexfile db/knex.ts || [ $count -eq $retries ]; do
+          echo "Waiting for container to start... ($count/$retries)"
+          count=$((count+1)) 
           sleep 5
         done
-        
+        if [ $count -eq $retries ]; then
+            echo "Container did not start in time, aborting."
+            exit 1
+        fi
         EOF
