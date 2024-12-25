@@ -73,10 +73,12 @@ jobs:
             -e JWT_SECRET=\$JWT_SECRET \
             -p 80:80 \
             robe/development:condo-app
-          # Display running containers
+          # Display running container
+          echo "List Running container:"
           docker ps -a
           
           # Display logs
+          echo "Displaying logs:"
           docker logs condo-app
 
           # Wait for the container to be ready, retry up to 3 times
