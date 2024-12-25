@@ -45,6 +45,7 @@ jobs:
 
       run: |
         ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@ec2-54-226-30-217.compute-1.amazonaws.com <<EOF
+          set -e
           docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
           docker pull robe/development:condo-app
           docker stop condo-app || true
