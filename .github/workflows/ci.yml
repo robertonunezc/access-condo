@@ -45,27 +45,27 @@ jobs:
 
       run: |
         ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@ec2-54-226-30-217.compute-1.amazonaws.com <<EOF
-          set -e
-          docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
-          docker pull robe/development:condo-app
-          docker stop condo-app || true
-          docker rm condo-app || true
-          docker run -d --name condo-app \  
-            -e DATABASE_USER=$DATABASE_USER \
-            -e DATABASE_PASSWORD=$DATABASE_PASSWORD \
-            -e DATABASE_NAME=$DATABASE_NAME \
-            -e DATABASE_HOST=$DATABASE_HOST \
-            -e DATABASE_PORT=$DATABASE_PORT \
-            -e DATABASE_ROOT_PASSWORD=$DATABASE_ROOT_PASSWORD \
-            -e AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID \
-            -e AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY \
-            -e AWS_REGION=$AWS_REGION \
-            -e AWS_BUCKET_NAME=$AWS_BUCKET_NAME \
-            -e WEB_HOST=$WEB_HOST \
-            -e MAILGUN_API_KEY=$MAILGUN_API_KEY \
-            -e MAILGUN_DOMAIN=$MAILGUN_DOMAIN \
-            -e JWT_SECRET=$JWT_SECRET \
-            -p 80:80 robe/development:condo-app\
-            docker exec condo-app npx knex migrate:latest --knexfile db/knex.ts
-
+        set -e
+        docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
+        docker pull robe/development:condo-app
+        docker stop condo-app || true
+        docker rm condo-app || true
+        docker run -d --name condo-app \
+          -e DATABASE_USER=\$DATABASE_USER \
+          -e DATABASE_PASSWORD=\$DATABASE_PASSWORD \
+          -e DATABASE_NAME=\$DATABASE_NAME \
+          -e DATABASE_HOST=\$DATABASE_HOST \
+          -e DATABASE_PORT=\$DATABASE_PORT \
+          -e DATABASE_ROOT_PASSWORD=\$DATABASE_ROOT_PASSWORD \
+          -e AWS_ACCESS_KEY_ID=\$AWS_ACCESS_KEY_ID \
+          -e AWS_SECRET_ACCESS_KEY=\$AWS_SECRET_ACCESS_KEY \
+          -e AWS_REGION=\$AWS_REGION \
+          -e AWS_BUCKET_NAME=\$AWS_BUCKET_NAME \
+          -e WEB_HOST=\$WEB_HOST \
+          -e MAILGUN_API_KEY=\$MAILGUN_API_KEY \
+          -e MAILGUN_DOMAIN=\$MAILGUN_DOMAIN \
+          -e JWT_SECRET=\$JWT_SECRET \
+          -p 80:80 \
+          robe/development:condo-app
+        docker exec condo-app npx knex migrate:latest --knexfile db/knex.ts
         EOF
