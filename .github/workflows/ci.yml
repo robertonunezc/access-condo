@@ -49,7 +49,7 @@ jobs:
         docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
         docker pull robe/development:condo-app
         docker stop condo-app || true
-        docker rm condo-app || true
+        docker rm -f condo-app || true
         docker run -d --name condo-app \
           -e DATABASE_USER=\$DATABASE_USER \
           -e DATABASE_PASSWORD=\$DATABASE_PASSWORD \
@@ -67,5 +67,10 @@ jobs:
           -e JWT_SECRET=\$JWT_SECRET \
           -p 80:80 \
           robe/development:condo-app
-        docker exec condo-app npx knex migrate:latest --knexfile db/knex.ts
+        # Wait for container to start
+        while ! docker exec condo-app npx knex migrate:latest --knexfile db/knex.ts; do
+          echo "Waiting for container to start..."  
+          sleep 5
+        done
+        
         EOF
