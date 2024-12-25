@@ -31,7 +31,7 @@ const s3Client = new S3Client({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "fake",
         secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "fake"
     },
-    region: process.env.AWS_REGION ?? "us-east-1"});
+    region: process.env.AWS_REGION ?? "us-west-2"});
 
 
 const uploadFileService = new UploadFile(s3Client,bucket, "images");
