@@ -4,15 +4,19 @@ import { Knex } from "knex";
 import { EmailService } from "../infra/email";
 import { UserService } from "../services/user/user.services";
 import { User } from "../entities/user";
+import { WorkerService } from "../services/worker/worker.service";
 export interface AuthResponse{
     token: string;
 }
 export class AuthCtrl {
     private userService: UserService;
     private emailServices: EmailService;
+    private workerService: WorkerService;
+
   constructor(db:Knex) {
     this.userService = new UserService(db);
     this.emailServices = new EmailService();
+    this.workerService = new WorkerService();
   }
   
 
@@ -29,6 +33,7 @@ export class AuthCtrl {
     // Send email to user with one time generated code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const emailText = `Your one time code is ${code}`;
+    await this.workerService.sendTaskToWorker({service: "email", payload: {email: user.email, subject: "CondoApp code", text: emailText}});
     await this.emailServices.sendEmail(user.email, "CondoApp code", emailText);
     await this.userService.setUserOTC(user.email, code);
   }
