@@ -32,3 +32,4 @@ coverage/
 .env.test.local
 .env.production
 .env.production.local
+.env.prod

@@ -17,6 +17,8 @@ RUN rm -rf dist
 
 RUN npm run build
 
+COPY .env.prod ./dist/.env
+
 # Install tzdata for timezone support
 RUN apt-get update && apt-get install -y tzdata
 
