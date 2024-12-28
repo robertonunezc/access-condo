@@ -1,4 +1,4 @@
-import * as aws from 'aws-sdk';
+import aws from 'aws-sdk';
 
 import dotenv from 'dotenv';
 dotenv.config(); 
