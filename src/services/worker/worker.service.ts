@@ -1,5 +1,7 @@
-import aws from 'aws-sdk';
+import * as aws from 'aws-sdk';
 
+import dotenv from 'dotenv';
+dotenv.config(); 
 export interface TaskMessage {
     service: string;
     payload: object;
@@ -17,6 +19,17 @@ export class WorkerService {
         // TODO: Do not create an instance each time the WorkerService is created
         // Create a single instance and reuse it
         this.sqs = new aws.SQS();
+
+        // Test the credentials
+        this.sqs.getQueueUrl({ QueueName: 'main' }, (err, data) => {
+            console.log("WorkerService", process.env.AWS_REGION);
+
+            if (err) {
+                console.error("Error validating AWS credentials:", err);
+            } else {
+                console.log("AWS credentials are valid:", data);
+            }
+        });
     }
 
  async sendTaskToWorker(task: TaskMessage): Promise<void> {
