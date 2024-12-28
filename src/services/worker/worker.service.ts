@@ -49,4 +49,34 @@ export class WorkerService {
         throw error;
     }
  }
+ 
+ async receiveTaskFromWorker(): Promise<TaskMessage|void> {
+    if (!this.QUEUE_URL) {
+        throw new Error('QUEUE_URL is not defined');
+    }
+    const params = {
+        QueueUrl: this.QUEUE_URL,
+        MaxNumberOfMessages: 1,
+        VisibilityTimeout: 20,
+        WaitTimeSeconds: 0,
+    };
+    try {
+        const result = await this.sqs.receiveMessage(params).promise();
+        if (!result.Messages || result.Messages.length === 0) {
+            return;
+        }
+        const message = result.Messages[0];
+        const task = JSON.parse(message.Body!);
+        const deleteParams = {
+            QueueUrl: this.QUEUE_URL,
+            ReceiptHandle: message.ReceiptHandle!,
+        };
+        await this.sqs.deleteMessage(deleteParams).promise();
+        return task;
+    }
+    catch (error) {
+        console.error('Error receiving message from SQS', error);
+        throw error;
+    }
+ }
 }
