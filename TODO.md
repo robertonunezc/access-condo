@@ -10,8 +10,8 @@
 
 [x] Query data only for the logged user
 
-[x] Replace .dotEnv with proccess.env
-
 [] Setup AWS ECS
 
-[] Add Redis to send email as a background task
+[] Create AWS lambda fn OTC in bg
+
+[] Add Redis to send to send email

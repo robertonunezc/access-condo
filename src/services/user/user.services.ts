@@ -6,6 +6,7 @@ export class UserService {
     private userRepository:UserRepository;
     constructor(db:Knex) {
         this.userRepository = new UserRepository(db);
+
     }
     async getUserByEmail(email:string):Promise<User|null> {
         return this.userRepository.getUserByEmail(email);

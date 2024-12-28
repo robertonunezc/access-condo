@@ -6,7 +6,7 @@ export interface TaskMessage {
     service: string;
     payload: object;
 }
-export class WorkerService {
+export class AWSWorkerService {
     private readonly QUEUE_URL = process.env.QUEUE_URL;
     private readonly sqs: aws.SQS;
     
@@ -49,7 +49,7 @@ export class WorkerService {
         throw error;
     }
  }
- 
+
  async receiveTaskFromWorker(): Promise<TaskMessage|void> {
     if (!this.QUEUE_URL) {
         throw new Error('QUEUE_URL is not defined');
