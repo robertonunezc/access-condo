@@ -4,6 +4,8 @@ import { Knex } from "knex";
 import { EmailService } from "../infra/email";
 import { UserService } from "../services/user/user.services";
 import { User } from "../entities/user";
+import {redis} from "../infra/redis.config";
+import {EmailTaskData} from "../services/worker/redis.service";
 export interface AuthResponse{
     token: string;
 }
@@ -30,7 +32,14 @@ export class AuthCtrl {
     // Send email to user with one time generated code
     const code = Math.floor(100000 + Math.random() * 900000).toString();
     const emailText = `Your one time code is ${code}`;
-    await this.emailServices.sendEmail(user.email, "CondoApp code", emailText); 
+    // send email in bg
+    const emailTaskData: EmailTaskData = {
+        to: user.email,
+        subject: "CondoApp code",
+        message: emailText,
+    }
+    await redis.queue.add("sendEmail", emailTaskData);
+    //await this.emailServices.sendEmail(user.email, "CondoApp code", emailText); 
     await this.userService.setUserOTC(user.email, code);
   }
   async verifyOtc(req: Request): Promise<User|null> {
