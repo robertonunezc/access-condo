@@ -1,7 +1,6 @@
 
 import{ Request } from "express";
 import { Knex } from "knex";
-import { EmailService } from "../infra/email";
 import { UserService } from "../services/user/user.services";
 import { User } from "../entities/user";
 import {redis} from "../infra/redis.config";
@@ -11,11 +10,9 @@ export interface AuthResponse{
 }
 export class AuthCtrl {
     private userService: UserService;
-    private emailServices: EmailService;
 
   constructor(db:Knex) {
     this.userService = new UserService(db);
-    this.emailServices = new EmailService();
   }
   
 
@@ -39,7 +36,6 @@ export class AuthCtrl {
         message: emailText,
     }
     await redis.queue.add("sendEmail", emailTaskData);
-    //await this.emailServices.sendEmail(user.email, "CondoApp code", emailText); 
     await this.userService.setUserOTC(user.email, code);
   }
   async verifyOtc(req: Request): Promise<User|null> {

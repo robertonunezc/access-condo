@@ -10,16 +10,16 @@ export interface EmailTaskData{
     subject: string;
     message: string;
 }
-
+const sendEmail = async (job: Job) => {
+    const { to, subject, message }:EmailTaskData = job.data;
+    console.log(`Sending email to ${to} with message: "${message}"`);
+    // Simulate email sending logic
+    const emailServices = new EmailService();
+    await emailServices.sendEmail(to, subject, message);
+  }
 // Define task processors
 const taskProcessors: Record<string, (job: Job) => Promise<void> | void> = {
-    sendEmail: async (job) => {
-      const { to, subject, message }:EmailTaskData = job.data;
-      console.log(`Sending email to ${to} with message: "${message}"`);
-      // Simulate email sending logic
-      const emailServices = new EmailService();
-      await emailServices.sendEmail(to, subject, message);
-    },
+    
     generateReport: async (job) => {
       const { reportId } = job.data;
       console.log(`Generating report with ID: ${reportId}`);
@@ -32,6 +32,7 @@ const taskProcessors: Record<string, (job: Job) => Promise<void> | void> = {
     },
   };
   
+  taskProcessors.sendEmail = sendEmail;
   // Define the generic job processor
   const processJob = async (job: Job) => {
     console.log(`Processing job: ${job.name} (ID: ${job.id})`);
