@@ -9,9 +9,9 @@ import userRoutes from "./routes/users.routes";
 import authRoutes from "./routes/auth.routes";
 import housesRoutes from "./routes/houses.routes";
 import { setupSwagger } from "./api-doc/swagger";
-
+import {config} from "./infra/config";
 const app: Express = express();
-const port = process.env.PORT || 3000;
+const port = config.appPort || 3000;
 const corsOptions = {
     origin: "*",
     optionsSuccessStatus: 200

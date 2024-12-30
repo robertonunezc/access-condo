@@ -1,13 +1,14 @@
 import { Knex } from 'knex';
-console.log("DB",process.env.DATABASE_HOST);
+import {config} from '../src/infra/config';
+console.log("DB",config.dbHost);
 const knexConfig: Knex.Config = {
     client: 'pg',
     connection: {
-      host: process.env.DATABASE_HOST || 'dbaa',
-      port: parseInt(process.env.DATABASE_PORT as string) || 5432,
-      user: process.env.DATABASE_USER || 'condooo',
-      password: process.env.DATABASE_PASSWORD || 'condo1232.',
-      database: process.env.DATABASE_NAME || 'cond33o',
+      host: config.dbHost,
+      port: config.dbPort,
+      user: config.dbUser,
+      password:config.dbPassword,
+      database:config.dbName,
     },
     migrations: {
         tableName: 'migrations',

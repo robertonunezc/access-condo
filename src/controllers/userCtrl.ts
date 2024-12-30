@@ -5,8 +5,9 @@ import { Request } from "express";
 import { RequestDataValidation } from "../errors/exceptions";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import { config } from "../infra/config";
 
-const jwtSecret = process.env.JWT_SECRET;
+const jwtSecret = config.jwtSecret;
 
 export class UserCtrl {
   private userRepository: UserRepository;

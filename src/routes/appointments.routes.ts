@@ -6,6 +6,7 @@ import knex from "knex";
 import knexConfig from "../../db/knex";
 import multer from "multer";
 import { logger } from "../infra/logger";
+import {config} from "../infra/config";
 // Configure Multer to store files in memory (you can also configure it to save to disk)
 const storage = multer.memoryStorage();
 const upload = multer({
@@ -24,14 +25,14 @@ const upload = multer({
 const db = knex(knexConfig);
 
 
-const bucket = process.env.AWS_BUCKET_NAME?? "condo-app-uploads";
+const bucket = config.awsBucketName?? "condo-app-uploads";
 
 const s3Client = new S3Client({
     credentials: {
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID ?? "fake",
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY ?? "fake"
+        accessKeyId: config.awsAccessKeyId ?? "fake",
+        secretAccessKey: config.awsAccessKeyId ?? "fake"
     },
-    region: process.env.AWS_REGION ?? "us-west-2"});
+    region: config.awsRegion ?? "us-west-2"});
 
 
 const uploadFileService = new UploadFile(s3Client,bucket, "images");

@@ -6,7 +6,7 @@ import { RequestDataValidation } from "../errors/exceptions";
 import { UploadFile } from "../services/uploadFiles/uploadFile.services";
 import { randomUUID } from "crypto";
 import { DateTime } from "luxon";
-
+import {config} from "../infra/config";
 export class AppointmentCtrl {
   private appointmentRepository: AppointmentRepository;
   private houseRepository: HouseRepository;
@@ -79,7 +79,7 @@ export class AppointmentCtrl {
     const updatedAppointment = await this.appointmentRepository.update(
       createdAppointment.id!,
       {
-        shareLink: `${process.env.WEB_HOST}/appointment/${
+        shareLink: `${config.webHost}/appointment/${
           createdAppointment.id
         }`,
       }

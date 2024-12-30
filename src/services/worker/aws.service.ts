@@ -1,20 +1,18 @@
 import aws from 'aws-sdk';
-
-import dotenv from 'dotenv';
-dotenv.config(); 
+import {config} from '../../infra/config';
 export interface TaskMessage {
     service: string;
     payload: object;
 }
 export class AWSWorkerService {
-    private readonly QUEUE_URL = process.env.QUEUE_URL;
+    private readonly QUEUE_URL = config.queueUrl;
     private readonly sqs: aws.SQS;
     
     constructor() {
         aws.config.update({
-            region: process.env.AWS_REGION, 
-            accessKeyId: process.env.AWS_ACCESS_KEY_ID, 
-            secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+            region: config.awsRegion, 
+            accessKeyId: config.awsAccessKeyId, 
+            secretAccessKey: config.awsSecretAccessKey,
           });
         // TODO: Do not create an instance each time the WorkerService is created
         // Create a single instance and reuse it
@@ -22,7 +20,7 @@ export class AWSWorkerService {
 
         // Test the credentials
         this.sqs.getQueueUrl({ QueueName: 'main' }, (err, data) => {
-            console.log("WorkerService", process.env.AWS_REGION);
+            console.log("WorkerService", config.awsRegion);
 
             if (err) {
                 console.error("Error validating AWS credentials:", err);

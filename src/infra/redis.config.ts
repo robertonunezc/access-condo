@@ -1,13 +1,12 @@
 import { Queue } from 'bullmq';
 import IORedis from 'ioredis';
-import dotenv from 'dotenv';
+import {config} from '../infra/config';
 export const REDIS_QUEUE_NAME = 'mainQueue';
 
-dotenv.config();
 // Connect to Redis
 const redisOptions = {
-    host: process.env.REDIS_HOST || 'localhost',
-    port: Number(process.env.REDIS_PORT) || 6379,
+    host: config.redisHost,
+    port: config.redisPort,
     maxRetriesPerRequest: null, // Required by BullMQ
   };
 const connection = new IORedis(redisOptions);

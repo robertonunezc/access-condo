@@ -1,14 +1,14 @@
 import Mailgun from 'mailgun.js';
 import formData from 'form-data';
 import { IMailgunClient } from 'mailgun.js/Interfaces';
-
+import { config } from '../infra/config';
 export class EmailService {
     private mailgun: IMailgunClient;
     constructor() {
         const mg = new Mailgun(formData);
         this.mailgun = mg.client({
             username: 'api',
-            key: process.env.MAILGUN_API_KEY?? "fake",
+            key: config.mailgunApiKey?? "fake",
         });
     }
 
@@ -21,7 +21,7 @@ export class EmailService {
             text: text,
             html: text,
         };
-            await this.mailgun.messages.create(process.env.MAILGUN_DOMAIN!, data);
+            await this.mailgun.messages.create(config.mailgunDomain, data);
 
     };
 }
