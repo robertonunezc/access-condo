@@ -39,8 +39,12 @@ jobs:
           set -e
           docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
           docker pull robe/development:condo-app
-          docker stop condo-app || true
-          docker rm -f condo-app || true
+          if docker ps -a | grep -q condo-app; then
+              docker stop condo-app || true
+              sleep 5
+              docker rm condo-app || true
+              sleep 5
+          fi
           docker run -d --name condo-app \
             -e DATABASE_USER=${{ secrets.DATABASE_USER }} \
             -e DATABASE_PASSWORD=${{ secrets.DATABASE_PASSWORD }} \
