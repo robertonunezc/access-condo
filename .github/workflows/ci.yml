@@ -34,20 +34,6 @@ jobs:
         ssh-add key.pem
       
     - name: Deploy to Server
-      env:
-        DATABASE_USER: ${{ secrets.DATABASE_USER }}
-        DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
-        DATABASE_NAME: ${{ secrets.DATABASE_NAME }}
-        DATABASE_HOST: ${{ secrets.DATABASE_HOST }}
-        DATABASE_PORT: ${{ secrets.DATABASE_PORT }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
-        AWS_BUCKET_NAME: ${{ secrets.AWS_BUCKET_NAME }}
-        WEB_HOST: ${{ secrets.WEB_HOST }}
-        MAILGUN_API_KEY: ${{ secrets.MAILGUN_API_KEY }}
-        MAILGUN_DOMAIN: ${{ secrets.MAILGUN_DOMAIN }}
-        JWT_SECRET: ${{ secrets.JWT_SECRET }}
       run: |
         ssh -o StrictHostKeyChecking=no -i key.pem ec2-user@ec2-54-226-30-217.compute-1.amazonaws.com <<EOF
           set -e
