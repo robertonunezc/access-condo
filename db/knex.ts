@@ -9,7 +9,7 @@ const knexConfig: Knex.Config = {
       user: config.dbUser,
       password:config.dbPassword,
       database:config.dbName,
-      ssl: false
+      ssl: { rejectUnauthorized: false }
     },
     migrations: {
         tableName: 'migrations',
