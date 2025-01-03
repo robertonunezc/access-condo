@@ -18,7 +18,11 @@ RUN rm -rf dist
 RUN npm run build
 
 # Install tzdata for timezone support
-RUN apt-get update && apt-get install -y tzdata
+RUN apt-get update && apt-get install -y \
+    postgresql-client \
+    netcat-traditional \
+    tzdata \
+    && rm -rf /var/lib/apt/lists/*
 
 # Set the timezone
 ENV TZ=America/Mexico_City
