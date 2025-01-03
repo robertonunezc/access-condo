@@ -40,6 +40,7 @@ jobs:
           docker login -u "${{ secrets.DOCKER_USERNAME }}" -p "${{ secrets.DOCKER_PASSWORD }}"
           docker pull robe/development:condo-app
           if docker ps -a | grep -q condo-app; then
+              echo "Stopping and removing existing container..."
               docker stop condo-app || true
               sleep 5
               docker rm condo-app || true
