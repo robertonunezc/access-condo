@@ -66,6 +66,7 @@ jobs:
               -e MAILGUN_API_KEY="${{ secrets.MAILGUN_API_KEY }}" \
               -e MAILGUN_DOMAIN="${{ secrets.MAILGUN_DOMAIN }}" \
               -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
+              -e PGSSLMODE="disable" \
               -e NODE_ENV="production" \
               -p 8080:3000 \
               robe/development:condo-app
