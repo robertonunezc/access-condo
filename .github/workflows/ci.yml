@@ -67,7 +67,7 @@ jobs:
               -e MAILGUN_DOMAIN="${{ secrets.MAILGUN_DOMAIN }}" \
               -e JWT_SECRET="${{ secrets.JWT_SECRET }}" \
               -e NODE_ENV="production" \
-              -p 80:3000 \
+              -p 8080:3000 \
               robe/development:condo-app
 
             # Display running container
