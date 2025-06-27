@@ -1,5 +1,8 @@
 # Use the official Node.js 20 image as the base image
-FROM --platform=linux/amd64 node:20
+FROM --platform=linux/amd64 node:20-slim
+
+# Update and upgrade system packages to reduce vulnerabilities
+RUN apt-get update && apt-get upgrade -y && rm -rf /var/lib/apt/lists/*
 
 # Set the working directory inside the container
 WORKDIR /app
