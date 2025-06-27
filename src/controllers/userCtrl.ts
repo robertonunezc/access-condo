@@ -24,7 +24,8 @@ export class UserCtrl {
     console.log("[POST] /user controller", req.body);
     const { name, email, phone, password, username } = req.body;
     const userTypes: UserType[] = [UserType.USER];
-    if (!name || !email || !phone || !password || !username) {
+    const isUserDataIncomplete = !name || !email || !phone || !password || !username;
+    if (isUserDataIncomplete) {
         throw new RequestDataValidation("Data is missing");
       }
     if(req.body.type !== undefined) {
